@@ -1,1 +1,17 @@
+[package]
+name = "aether-toolbus"
+description = "AETHER toolbus core: schema validation, routing, policy, budgets and a tamper-evident audit log"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
 
+[lints]
+workspace = true
+
+[dependencies]
+aether-jsonrpc.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+regex.workspace = true
+sha2.workspace = true
