@@ -1,1 +1,4264 @@
-
+{
+ "version": 1,
+ "description": "Wire-conformance corpus. Each case names a schema (file#pointer), an instance and the verdict every implementation of the proto/ contract must reach. Generated from the reference checks used while developing proto/ plus cases for the strict semantics (integer representation, base64, calendar-valid timestamps, end-of-text anchors).",
+ "cases": [
+  {
+   "name": "method name crawler.job.submit",
+   "schema": "common.schema.json#/$defs/JsonRpcMethod",
+   "valid": true,
+   "instance": "crawler.job.submit"
+  },
+  {
+   "name": "method name crawler.job.status",
+   "schema": "common.schema.json#/$defs/JsonRpcMethod",
+   "valid": true,
+   "instance": "crawler.job.status"
+  },
+  {
+   "name": "method name crawler.job.cancel",
+   "schema": "common.schema.json#/$defs/JsonRpcMethod",
+   "valid": true,
+   "instance": "crawler.job.cancel"
+  },
+  {
+   "name": "method name crawler.subscribe",
+   "schema": "common.schema.json#/$defs/JsonRpcMethod",
+   "valid": true,
+   "instance": "crawler.subscribe"
+  },
+  {
+   "name": "method name memory.stats",
+   "schema": "common.schema.json#/$defs/JsonRpcMethod",
+   "valid": true,
+   "instance": "memory.stats"
+  },
+  {
+   "name": "method name memory.get_doc",
+   "schema": "common.schema.json#/$defs/JsonRpcMethod",
+   "valid": true,
+   "instance": "memory.get_doc"
+  },
+  {
+   "name": "method name crawler.event",
+   "schema": "common.schema.json#/$defs/JsonRpcMethod",
+   "valid": true,
+   "instance": "crawler.event"
+  },
+  {
+   "name": "method name engine.generate",
+   "schema": "common.schema.json#/$defs/JsonRpcMethod",
+   "valid": true,
+   "instance": "engine.generate"
+  },
+  {
+   "name": "method name engine.cancel",
+   "schema": "common.schema.json#/$defs/JsonRpcMethod",
+   "valid": true,
+   "instance": "engine.cancel"
+  },
+  {
+   "name": "method name engine.embed",
+   "schema": "common.schema.json#/$defs/JsonRpcMethod",
+   "valid": true,
+   "instance": "engine.embed"
+  },
+  {
+   "name": "method name engine.load_checkpoint",
+   "schema": "common.schema.json#/$defs/JsonRpcMethod",
+   "valid": true,
+   "instance": "engine.load_checkpoint"
+  },
+  {
+   "name": "method name engine.status",
+   "schema": "common.schema.json#/$defs/JsonRpcMethod",
+   "valid": true,
+   "instance": "engine.status"
+  },
+  {
+   "name": "method name stream.tool_call",
+   "schema": "common.schema.json#/$defs/JsonRpcMethod",
+   "valid": true,
+   "instance": "stream.tool_call"
+  },
+  {
+   "name": "method name stream.tool_result",
+   "schema": "common.schema.json#/$defs/JsonRpcMethod",
+   "valid": true,
+   "instance": "stream.tool_result"
+  },
+  {
+   "name": "method name stream.citation",
+   "schema": "common.schema.json#/$defs/JsonRpcMethod",
+   "valid": true,
+   "instance": "stream.citation"
+  },
+  {
+   "name": "method name conn.goaway",
+   "schema": "common.schema.json#/$defs/JsonRpcMethod",
+   "valid": true,
+   "instance": "conn.goaway"
+  },
+  {
+   "name": "method name learn.status",
+   "schema": "common.schema.json#/$defs/JsonRpcMethod",
+   "valid": true,
+   "instance": "learn.status"
+  },
+  {
+   "name": "method name learn.subscribe",
+   "schema": "common.schema.json#/$defs/JsonRpcMethod",
+   "valid": true,
+   "instance": "learn.subscribe"
+  },
+  {
+   "name": "method name learn.pause",
+   "schema": "common.schema.json#/$defs/JsonRpcMethod",
+   "valid": true,
+   "instance": "learn.pause"
+  },
+  {
+   "name": "method name learn.resume",
+   "schema": "common.schema.json#/$defs/JsonRpcMethod",
+   "valid": true,
+   "instance": "learn.resume"
+  },
+  {
+   "name": "method name learn.checkpoint.list",
+   "schema": "common.schema.json#/$defs/JsonRpcMethod",
+   "valid": true,
+   "instance": "learn.checkpoint.list"
+  },
+  {
+   "name": "method name learn.checkpoint.rollback",
+   "schema": "common.schema.json#/$defs/JsonRpcMethod",
+   "valid": true,
+   "instance": "learn.checkpoint.rollback"
+  },
+  {
+   "name": "method name learn.event",
+   "schema": "common.schema.json#/$defs/JsonRpcMethod",
+   "valid": true,
+   "instance": "learn.event"
+  },
+  {
+   "name": "method name web.crawl_and_index",
+   "schema": "common.schema.json#/$defs/JsonRpcMethod",
+   "valid": true,
+   "instance": "web.crawl_and_index"
+  },
+  {
+   "name": "method name memory.hybrid_search",
+   "schema": "common.schema.json#/$defs/JsonRpcMethod",
+   "valid": true,
+   "instance": "memory.hybrid_search"
+  },
+  {
+   "name": "method name sandbox.execute_python",
+   "schema": "common.schema.json#/$defs/JsonRpcMethod",
+   "valid": true,
+   "instance": "sandbox.execute_python"
+  },
+  {
+   "name": "method name training.commit_verified_sample",
+   "schema": "common.schema.json#/$defs/JsonRpcMethod",
+   "valid": true,
+   "instance": "training.commit_verified_sample"
+  },
+  {
+   "name": "method name bus.list_tools",
+   "schema": "common.schema.json#/$defs/JsonRpcMethod",
+   "valid": true,
+   "instance": "bus.list_tools"
+  },
+  {
+   "name": "envelope web.crawl_and_index",
+   "schema": "common.schema.json#/$defs/JsonRpcRequest",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "method": "web.crawl_and_index",
+    "params": {
+     "urls": [
+      "https://example.org/post"
+     ],
+     "depth": 1,
+     "max_pages": 10,
+     "_meta": {
+      "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+      "session_id": "s_1",
+      "turn_id": "t_4",
+      "deadline_unix_ms": 1763432000000
+     }
+    }
+   }
+  },
+  {
+   "name": "params web.crawl_and_index",
+   "schema": "toolbus.schema.json#/$defs/WebCrawlAndIndexParams",
+   "valid": true,
+   "instance": {
+    "urls": [
+     "https://example.org/post"
+    ],
+    "depth": 1,
+    "max_pages": 10,
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "result web.crawl_and_index",
+   "schema": "toolbus.schema.json#/$defs/WebCrawlAndIndexResult",
+   "valid": true,
+   "instance": {
+    "job_id": "j_81",
+    "state": "complete",
+    "pages": [
+     {
+      "url": "https://example.org/post",
+      "doc_id": "d_5c",
+      "title": "Post",
+      "chunks": 14,
+      "bytes": 48211,
+      "status": "indexed"
+     }
+    ],
+    "stats": {
+     "fetched": 6,
+     "indexed": 5,
+     "skipped": 1,
+     "took_ms": 3120
+    }
+   }
+  },
+  {
+   "name": "success envelope web.crawl_and_index",
+   "schema": "common.schema.json#/$defs/JsonRpcSuccess",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "result": {
+     "job_id": "j_81",
+     "state": "complete",
+     "pages": [
+      {
+       "url": "https://example.org/post",
+       "doc_id": "d_5c",
+       "title": "Post",
+       "chunks": 14,
+       "bytes": 48211,
+       "status": "indexed"
+      }
+     ],
+     "stats": {
+      "fetched": 6,
+      "indexed": 5,
+      "skipped": 1,
+      "took_ms": 3120
+     }
+    }
+   }
+  },
+  {
+   "name": "budget error",
+   "schema": "common.schema.json#/$defs/JsonRpcError",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3b",
+    "error": {
+     "code": -32006,
+     "message": "Per-turn tool budget exhausted",
+     "data": {
+      "limit": 8
+     }
+    }
+   }
+  },
+  {
+   "name": "parse error null id",
+   "schema": "common.schema.json#/$defs/JsonRpcError",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": null,
+    "error": {
+     "code": -32700,
+     "message": "Parse error"
+    }
+   }
+  },
+  {
+   "name": "crawl without _meta",
+   "schema": "toolbus.schema.json#/$defs/WebCrawlAndIndexParams",
+   "valid": false,
+   "instance": {
+    "urls": [
+     "https://a.org"
+    ]
+   }
+  },
+  {
+   "name": "crawl with non-turn _meta",
+   "schema": "toolbus.schema.json#/$defs/WebCrawlAndIndexParams",
+   "valid": false,
+   "instance": {
+    "urls": [
+     "https://a.org"
+    ],
+    "_meta": {
+     "trace_id": "tr_1"
+    }
+   }
+  },
+  {
+   "name": "crawl depth 4",
+   "schema": "toolbus.schema.json#/$defs/WebCrawlAndIndexParams",
+   "valid": false,
+   "instance": {
+    "urls": [
+     "https://example.org/post"
+    ],
+    "depth": 4,
+    "max_pages": 10,
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "crawl empty urls",
+   "schema": "toolbus.schema.json#/$defs/WebCrawlAndIndexParams",
+   "valid": false,
+   "instance": {
+    "urls": [],
+    "depth": 1,
+    "max_pages": 10,
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "crawl ftp url",
+   "schema": "toolbus.schema.json#/$defs/WebCrawlAndIndexParams",
+   "valid": false,
+   "instance": {
+    "urls": [
+     "ftp://a.org/x"
+    ],
+    "depth": 1,
+    "max_pages": 10,
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "crawl duplicate urls",
+   "schema": "toolbus.schema.json#/$defs/WebCrawlAndIndexParams",
+   "valid": false,
+   "instance": {
+    "urls": [
+     "https://a.org",
+     "https://a.org"
+    ],
+    "depth": 1,
+    "max_pages": 10,
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "crawl unknown member",
+   "schema": "toolbus.schema.json#/$defs/WebCrawlAndIndexParams",
+   "valid": false,
+   "instance": {
+    "urls": [
+     "https://example.org/post"
+    ],
+    "depth": 1,
+    "max_pages": 10,
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    },
+    "follow_redirects_to_localhost": true
+   }
+  },
+  {
+   "name": "positional params",
+   "schema": "common.schema.json#/$defs/JsonRpcRequest",
+   "valid": false,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "web.crawl_and_index",
+    "params": [
+     1
+    ]
+   }
+  },
+  {
+   "name": "null request id",
+   "schema": "common.schema.json#/$defs/JsonRpcRequest",
+   "valid": false,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": null,
+    "method": "engine.status",
+    "params": {}
+   }
+  },
+  {
+   "name": "jsonrpc 1.0",
+   "schema": "common.schema.json#/$defs/JsonRpcRequest",
+   "valid": false,
+   "instance": {
+    "jsonrpc": "1.0",
+    "id": 1,
+    "method": "engine.status",
+    "params": {}
+   }
+  },
+  {
+   "name": "undotted method",
+   "schema": "common.schema.json#/$defs/JsonRpcRequest",
+   "valid": false,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "status",
+    "params": {}
+   }
+  },
+  {
+   "name": "notification carrying id",
+   "schema": "common.schema.json#/$defs/JsonRpcNotification",
+   "valid": false,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "stream.citation",
+    "params": {}
+   }
+  },
+  {
+   "name": "envelope memory.hybrid_search",
+   "schema": "common.schema.json#/$defs/JsonRpcRequest",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "method": "memory.hybrid_search",
+    "params": {
+     "query": "rust async runtimes",
+     "top_k": 8,
+     "mode": "hybrid",
+     "filters": {
+      "domains": [
+       "docs.rs"
+      ],
+      "since": "2026-01-01T00:00:00Z"
+     },
+     "_meta": {
+      "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+      "session_id": "s_1",
+      "turn_id": "t_4",
+      "deadline_unix_ms": 1763432000000
+     }
+    }
+   }
+  },
+  {
+   "name": "params memory.hybrid_search",
+   "schema": "toolbus.schema.json#/$defs/MemoryHybridSearchParams",
+   "valid": true,
+   "instance": {
+    "query": "rust async runtimes",
+    "top_k": 8,
+    "mode": "hybrid",
+    "filters": {
+     "domains": [
+      "docs.rs"
+     ],
+     "since": "2026-01-01T00:00:00Z"
+    },
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "result memory.hybrid_search",
+   "schema": "toolbus.schema.json#/$defs/MemoryHybridSearchResult",
+   "valid": true,
+   "instance": {
+    "hits": [
+     {
+      "doc_id": "d_5c",
+      "chunk_id": "ch_9",
+      "url": "https://example.org/post",
+      "title": "Post",
+      "snippet": "…",
+      "score": 0.83,
+      "bm25_rank": 1,
+      "vec_rank": 2,
+      "fetched_at": "2026-11-18T03:04:05Z"
+     }
+    ],
+    "took_ms": 4.2,
+    "embed_version": "emb-v1-3fa9c2d1"
+   }
+  },
+  {
+   "name": "success envelope memory.hybrid_search",
+   "schema": "common.schema.json#/$defs/JsonRpcSuccess",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "result": {
+     "hits": [
+      {
+       "doc_id": "d_5c",
+       "chunk_id": "ch_9",
+       "url": "https://example.org/post",
+       "title": "Post",
+       "snippet": "…",
+       "score": 0.83,
+       "bm25_rank": 1,
+       "vec_rank": 2,
+       "fetched_at": "2026-11-18T03:04:05Z"
+      }
+     ],
+     "took_ms": 4.2,
+     "embed_version": "emb-v1-3fa9c2d1"
+    }
+   }
+  },
+  {
+   "name": "search top_k 51",
+   "schema": "toolbus.schema.json#/$defs/MemoryHybridSearchParams",
+   "valid": false,
+   "instance": {
+    "query": "x",
+    "top_k": 51,
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "search bad domain",
+   "schema": "toolbus.schema.json#/$defs/MemoryHybridSearchParams",
+   "valid": false,
+   "instance": {
+    "query": "x",
+    "filters": {
+     "domains": [
+      "Not A Host"
+     ]
+    },
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "search since not a date",
+   "schema": "toolbus.schema.json#/$defs/MemoryHybridSearchParams",
+   "valid": false,
+   "instance": {
+    "query": "x",
+    "filters": {
+     "since": "yesterday"
+    },
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "envelope sandbox.execute_python",
+   "schema": "common.schema.json#/$defs/JsonRpcRequest",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "method": "sandbox.execute_python",
+    "params": {
+     "code": "print(2+2)",
+     "timeout_ms": 5000,
+     "files": [
+      {
+       "path": "data/in.csv",
+       "content_b64": "YSxiCjEsMg=="
+      }
+     ],
+     "_meta": {
+      "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+      "session_id": "s_1",
+      "turn_id": "t_4",
+      "deadline_unix_ms": 1763432000000
+     }
+    }
+   }
+  },
+  {
+   "name": "params sandbox.execute_python",
+   "schema": "toolbus.schema.json#/$defs/SandboxExecutePythonParams",
+   "valid": true,
+   "instance": {
+    "code": "print(2+2)",
+    "timeout_ms": 5000,
+    "files": [
+     {
+      "path": "data/in.csv",
+      "content_b64": "YSxiCjEsMg=="
+     }
+    ],
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "result sandbox.execute_python",
+   "schema": "toolbus.schema.json#/$defs/SandboxExecutePythonResult",
+   "valid": true,
+   "instance": {
+    "exit_code": 0,
+    "stdout": "4\n",
+    "stderr": "",
+    "truncated": false,
+    "duration_ms": 31.5
+   }
+  },
+  {
+   "name": "success envelope sandbox.execute_python",
+   "schema": "common.schema.json#/$defs/JsonRpcSuccess",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "result": {
+     "exit_code": 0,
+     "stdout": "4\n",
+     "stderr": "",
+     "truncated": false,
+     "duration_ms": 31.5
+    }
+   }
+  },
+  {
+   "name": "result sandbox.execute_python",
+   "schema": "toolbus.schema.json#/$defs/SandboxExecutePythonResult",
+   "valid": true,
+   "instance": {
+    "exit_code": null,
+    "stdout": "",
+    "stderr": "",
+    "truncated": false,
+    "duration_ms": 10000,
+    "killed_by": "timeout"
+   }
+  },
+  {
+   "name": "success envelope sandbox.execute_python",
+   "schema": "common.schema.json#/$defs/JsonRpcSuccess",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "result": {
+     "exit_code": null,
+     "stdout": "",
+     "stderr": "",
+     "truncated": false,
+     "duration_ms": 10000,
+     "killed_by": "timeout"
+    }
+   }
+  },
+  {
+   "name": "sandbox path '../etc/passwd'",
+   "schema": "toolbus.schema.json#/$defs/SandboxExecutePythonParams",
+   "valid": false,
+   "instance": {
+    "code": "1",
+    "files": [
+     {
+      "path": "../etc/passwd",
+      "content_b64": ""
+     }
+    ],
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "sandbox path 'a/../b'",
+   "schema": "toolbus.schema.json#/$defs/SandboxExecutePythonParams",
+   "valid": false,
+   "instance": {
+    "code": "1",
+    "files": [
+     {
+      "path": "a/../b",
+      "content_b64": ""
+     }
+    ],
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "sandbox path '/abs/path'",
+   "schema": "toolbus.schema.json#/$defs/SandboxExecutePythonParams",
+   "valid": false,
+   "instance": {
+    "code": "1",
+    "files": [
+     {
+      "path": "/abs/path",
+      "content_b64": ""
+     }
+    ],
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "sandbox path '.hidden/..'",
+   "schema": "toolbus.schema.json#/$defs/SandboxExecutePythonParams",
+   "valid": false,
+   "instance": {
+    "code": "1",
+    "files": [
+     {
+      "path": ".hidden/..",
+      "content_b64": ""
+     }
+    ],
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "sandbox path 'a//b'",
+   "schema": "toolbus.schema.json#/$defs/SandboxExecutePythonParams",
+   "valid": false,
+   "instance": {
+    "code": "1",
+    "files": [
+     {
+      "path": "a//b",
+      "content_b64": ""
+     }
+    ],
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "sandbox timeout 50ms",
+   "schema": "toolbus.schema.json#/$defs/SandboxExecutePythonParams",
+   "valid": false,
+   "instance": {
+    "code": "1",
+    "timeout_ms": 50,
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "sandbox empty code",
+   "schema": "toolbus.schema.json#/$defs/SandboxExecutePythonParams",
+   "valid": false,
+   "instance": {
+    "code": "",
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "envelope training.commit_verified_sample",
+   "schema": "common.schema.json#/$defs/JsonRpcRequest",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "method": "training.commit_verified_sample",
+    "params": {
+     "prompt": "What is 2+2?",
+     "response": "4",
+     "verification": {
+      "method": "tool_execution",
+      "trace_id": "tr_01J9X"
+     },
+     "evidence": [
+      {
+       "doc_id": "d_5c",
+       "chunk_id": "ch_9"
+      }
+     ],
+     "source_url": "https://example.org/post",
+     "_meta": {
+      "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+      "session_id": "s_1",
+      "turn_id": "t_4",
+      "deadline_unix_ms": 1763432000000
+     }
+    }
+   }
+  },
+  {
+   "name": "params training.commit_verified_sample",
+   "schema": "toolbus.schema.json#/$defs/TrainingCommitVerifiedSampleParams",
+   "valid": true,
+   "instance": {
+    "prompt": "What is 2+2?",
+    "response": "4",
+    "verification": {
+     "method": "tool_execution",
+     "trace_id": "tr_01J9X"
+    },
+    "evidence": [
+     {
+      "doc_id": "d_5c",
+      "chunk_id": "ch_9"
+     }
+    ],
+    "source_url": "https://example.org/post",
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "result training.commit_verified_sample",
+   "schema": "toolbus.schema.json#/$defs/TrainingCommitVerifiedSampleResult",
+   "valid": true,
+   "instance": {
+    "sample_id": "smp_01J9XY",
+    "status": "staged",
+    "gate": "quarantine"
+   }
+  },
+  {
+   "name": "success envelope training.commit_verified_sample",
+   "schema": "common.schema.json#/$defs/JsonRpcSuccess",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "result": {
+     "sample_id": "smp_01J9XY",
+     "status": "staged",
+     "gate": "quarantine"
+    }
+   }
+  },
+  {
+   "name": "sample promoted straight to buffer",
+   "schema": "toolbus.schema.json#/$defs/TrainingCommitVerifiedSampleResult",
+   "valid": false,
+   "instance": {
+    "sample_id": "smp_1",
+    "status": "accepted",
+    "gate": "buffer"
+   }
+  },
+  {
+   "name": "sample bad method",
+   "schema": "toolbus.schema.json#/$defs/TrainingCommitVerifiedSampleParams",
+   "valid": false,
+   "instance": {
+    "prompt": "a",
+    "response": "b",
+    "verification": {
+     "method": "trust_me"
+    },
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "sample bad evidence id",
+   "schema": "toolbus.schema.json#/$defs/TrainingCommitVerifiedSampleParams",
+   "valid": false,
+   "instance": {
+    "prompt": "a",
+    "response": "b",
+    "verification": {
+     "method": "retrieval_grounded"
+    },
+    "evidence": [
+     {
+      "doc_id": "x_1",
+      "chunk_id": "ch_1"
+     }
+    ],
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "envelope bus.list_tools",
+   "schema": "common.schema.json#/$defs/JsonRpcRequest",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "method": "bus.list_tools",
+    "params": {
+     "_meta": {
+      "trace_id": "tr_1"
+     }
+    }
+   }
+  },
+  {
+   "name": "params bus.list_tools",
+   "schema": "toolbus.schema.json#/$defs/BusListToolsParams",
+   "valid": true,
+   "instance": {
+    "_meta": {
+     "trace_id": "tr_1"
+    }
+   }
+  },
+  {
+   "name": "result bus.list_tools",
+   "schema": "toolbus.schema.json#/$defs/BusListToolsResult",
+   "valid": true,
+   "instance": {
+    "tools": [
+     {
+      "name": "memory.hybrid_search",
+      "description": "Search local memory.",
+      "input_schema": {
+       "type": "object"
+      },
+      "output_schema": {
+       "type": "object"
+      },
+      "max_timeout_ms": 5000,
+      "side_effects": "none"
+     }
+    ]
+   }
+  },
+  {
+   "name": "success envelope bus.list_tools",
+   "schema": "common.schema.json#/$defs/JsonRpcSuccess",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "result": {
+     "tools": [
+      {
+       "name": "memory.hybrid_search",
+       "description": "Search local memory.",
+       "input_schema": {
+        "type": "object"
+       },
+       "output_schema": {
+        "type": "object"
+       },
+       "max_timeout_ms": 5000,
+       "side_effects": "none"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "name": "envelope engine.generate",
+   "schema": "common.schema.json#/$defs/JsonRpcRequest",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "method": "engine.generate",
+    "params": {
+     "messages": [
+      {
+       "role": "user",
+       "content": "What changed in Rust 1.90?"
+      }
+     ],
+     "sampling": {
+      "temperature": 0.7,
+      "top_p": 0.95
+     },
+     "max_new_tokens": 2048,
+     "tools": "auto",
+     "rag": {
+      "enabled": true,
+      "top_k": 8
+     },
+     "priority": "foreground",
+     "_meta": {
+      "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+      "session_id": "s_1",
+      "turn_id": "t_4",
+      "deadline_unix_ms": 1763432000000
+     }
+    }
+   }
+  },
+  {
+   "name": "params engine.generate",
+   "schema": "engine.schema.json#/$defs/EngineGenerateParams",
+   "valid": true,
+   "instance": {
+    "messages": [
+     {
+      "role": "user",
+      "content": "What changed in Rust 1.90?"
+     }
+    ],
+    "sampling": {
+     "temperature": 0.7,
+     "top_p": 0.95
+    },
+    "max_new_tokens": 2048,
+    "tools": "auto",
+    "rag": {
+     "enabled": true,
+     "top_k": 8
+    },
+    "priority": "foreground",
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "envelope engine.generate",
+   "schema": "common.schema.json#/$defs/JsonRpcRequest",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "method": "engine.generate",
+    "params": {
+     "messages": [
+      {
+       "role": "user",
+       "content": "What changed in Rust 1.90?"
+      }
+     ],
+     "sampling": {
+      "temperature": 0.7,
+      "top_p": 0.95
+     },
+     "max_new_tokens": 2048,
+     "tools": [
+      "web.crawl_and_index",
+      "memory.hybrid_search"
+     ],
+     "rag": {
+      "enabled": true,
+      "top_k": 8
+     },
+     "priority": "foreground",
+     "_meta": {
+      "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+      "session_id": "s_1",
+      "turn_id": "t_4",
+      "deadline_unix_ms": 1763432000000
+     },
+     "checkpoint_id": "ck_base"
+    }
+   }
+  },
+  {
+   "name": "params engine.generate",
+   "schema": "engine.schema.json#/$defs/EngineGenerateParams",
+   "valid": true,
+   "instance": {
+    "messages": [
+     {
+      "role": "user",
+      "content": "What changed in Rust 1.90?"
+     }
+    ],
+    "sampling": {
+     "temperature": 0.7,
+     "top_p": 0.95
+    },
+    "max_new_tokens": 2048,
+    "tools": [
+     "web.crawl_and_index",
+     "memory.hybrid_search"
+    ],
+    "rag": {
+     "enabled": true,
+     "top_k": 8
+    },
+    "priority": "foreground",
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    },
+    "checkpoint_id": "ck_base"
+   }
+  },
+  {
+   "name": "generate tools 'all'",
+   "schema": "engine.schema.json#/$defs/EngineGenerateParams",
+   "valid": false,
+   "instance": {
+    "messages": [
+     {
+      "role": "user",
+      "content": "What changed in Rust 1.90?"
+     }
+    ],
+    "sampling": {
+     "temperature": 0.7,
+     "top_p": 0.95
+    },
+    "max_new_tokens": 2048,
+    "tools": "all",
+    "rag": {
+     "enabled": true,
+     "top_k": 8
+    },
+    "priority": "foreground",
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "generate duplicate tools",
+   "schema": "engine.schema.json#/$defs/EngineGenerateParams",
+   "valid": false,
+   "instance": {
+    "messages": [
+     {
+      "role": "user",
+      "content": "What changed in Rust 1.90?"
+     }
+    ],
+    "sampling": {
+     "temperature": 0.7,
+     "top_p": 0.95
+    },
+    "max_new_tokens": 2048,
+    "tools": [
+     "memory.hybrid_search",
+     "memory.hybrid_search"
+    ],
+    "rag": {
+     "enabled": true,
+     "top_k": 8
+    },
+    "priority": "foreground",
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "generate unknown tool",
+   "schema": "engine.schema.json#/$defs/EngineGenerateParams",
+   "valid": false,
+   "instance": {
+    "messages": [
+     {
+      "role": "user",
+      "content": "What changed in Rust 1.90?"
+     }
+    ],
+    "sampling": {
+     "temperature": 0.7,
+     "top_p": 0.95
+    },
+    "max_new_tokens": 2048,
+    "tools": [
+     "fs.delete"
+    ],
+    "rag": {
+     "enabled": true,
+     "top_k": 8
+    },
+    "priority": "foreground",
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "generate top_p 0",
+   "schema": "engine.schema.json#/$defs/EngineGenerateParams",
+   "valid": false,
+   "instance": {
+    "messages": [
+     {
+      "role": "user",
+      "content": "What changed in Rust 1.90?"
+     }
+    ],
+    "sampling": {
+     "temperature": 0.7,
+     "top_p": 0
+    },
+    "max_new_tokens": 2048,
+    "tools": "auto",
+    "rag": {
+     "enabled": true,
+     "top_k": 8
+    },
+    "priority": "foreground",
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "generate repeats session_id in params",
+   "schema": "engine.schema.json#/$defs/EngineGenerateParams",
+   "valid": false,
+   "instance": {
+    "messages": [
+     {
+      "role": "user",
+      "content": "What changed in Rust 1.90?"
+     }
+    ],
+    "sampling": {
+     "temperature": 0.7,
+     "top_p": 0.95
+    },
+    "max_new_tokens": 2048,
+    "tools": "auto",
+    "rag": {
+     "enabled": true,
+     "top_k": 8
+    },
+    "priority": "foreground",
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    },
+    "session_id": "s_1"
+   }
+  },
+  {
+   "name": "generate no messages",
+   "schema": "engine.schema.json#/$defs/EngineGenerateParams",
+   "valid": false,
+   "instance": {
+    "messages": [],
+    "sampling": {
+     "temperature": 0.7,
+     "top_p": 0.95
+    },
+    "max_new_tokens": 2048,
+    "tools": "auto",
+    "rag": {
+     "enabled": true,
+     "top_k": 8
+    },
+    "priority": "foreground",
+    "_meta": {
+     "trace_id": "tr_01J9XABCDEFGHJKMNPQRSTVWXY",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "result engine.generate",
+   "schema": "engine.schema.json#/$defs/EngineGenerateResult",
+   "valid": true,
+   "instance": {
+    "finish_reason": "stop",
+    "usage": {
+     "prompt_tokens": 812,
+     "completion_tokens": 240,
+     "cached_tokens": 600,
+     "ttft_ms": 41.2,
+     "tps": 96.5
+    },
+    "checkpoint_id": "ck_base"
+   }
+  },
+  {
+   "name": "success envelope engine.generate",
+   "schema": "common.schema.json#/$defs/JsonRpcSuccess",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "result": {
+     "finish_reason": "stop",
+     "usage": {
+      "prompt_tokens": 812,
+      "completion_tokens": 240,
+      "cached_tokens": 600,
+      "ttft_ms": 41.2,
+      "tps": 96.5
+     },
+     "checkpoint_id": "ck_base"
+    }
+   }
+  },
+  {
+   "name": "envelope engine.cancel",
+   "schema": "common.schema.json#/$defs/JsonRpcRequest",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "method": "engine.cancel",
+    "params": {
+     "turn_id": "t_1",
+     "_meta": {
+      "trace_id": "tr_1"
+     }
+    }
+   }
+  },
+  {
+   "name": "params engine.cancel",
+   "schema": "engine.schema.json#/$defs/EngineCancelParams",
+   "valid": true,
+   "instance": {
+    "turn_id": "t_1",
+    "_meta": {
+     "trace_id": "tr_1"
+    }
+   }
+  },
+  {
+   "name": "result engine.cancel",
+   "schema": "engine.schema.json#/$defs/EngineCancelResult",
+   "valid": true,
+   "instance": {
+    "cancelled": true
+   }
+  },
+  {
+   "name": "success envelope engine.cancel",
+   "schema": "common.schema.json#/$defs/JsonRpcSuccess",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "result": {
+     "cancelled": true
+    }
+   }
+  },
+  {
+   "name": "envelope engine.embed",
+   "schema": "common.schema.json#/$defs/JsonRpcRequest",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "method": "engine.embed",
+    "params": {
+     "inputs": [
+      "hello",
+      "world"
+     ],
+     "kind": "document",
+     "_meta": {
+      "trace_id": "tr_1"
+     }
+    }
+   }
+  },
+  {
+   "name": "params engine.embed",
+   "schema": "engine.schema.json#/$defs/EngineEmbedParams",
+   "valid": true,
+   "instance": {
+    "inputs": [
+     "hello",
+     "world"
+    ],
+    "kind": "document",
+    "_meta": {
+     "trace_id": "tr_1"
+    }
+   }
+  },
+  {
+   "name": "result engine.embed",
+   "schema": "engine.schema.json#/$defs/EngineEmbedResult",
+   "valid": true,
+   "instance": {
+    "dim": 768,
+    "count": 2,
+    "embed_version": "emb-v1-3fa9c2d1",
+    "encoding": "f16le",
+    "normalization": "l2",
+    "vector_frames": 1
+   }
+  },
+  {
+   "name": "success envelope engine.embed",
+   "schema": "common.schema.json#/$defs/JsonRpcSuccess",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "result": {
+     "dim": 768,
+     "count": 2,
+     "embed_version": "emb-v1-3fa9c2d1",
+     "encoding": "f16le",
+     "normalization": "l2",
+     "vector_frames": 1
+    }
+   }
+  },
+  {
+   "name": "embed >512 inputs",
+   "schema": "engine.schema.json#/$defs/EngineEmbedParams",
+   "valid": false,
+   "instance": {
+    "inputs": [
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x",
+     "x"
+    ],
+    "kind": "query",
+    "_meta": {
+     "trace_id": "tr_1"
+    }
+   }
+  },
+  {
+   "name": "envelope engine.load_checkpoint",
+   "schema": "common.schema.json#/$defs/JsonRpcRequest",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "method": "engine.load_checkpoint",
+    "params": {
+     "checkpoint_id": "ck_01J9",
+     "_meta": {
+      "trace_id": "tr_1"
+     }
+    }
+   }
+  },
+  {
+   "name": "params engine.load_checkpoint",
+   "schema": "engine.schema.json#/$defs/EngineLoadCheckpointParams",
+   "valid": true,
+   "instance": {
+    "checkpoint_id": "ck_01J9",
+    "_meta": {
+     "trace_id": "tr_1"
+    }
+   }
+  },
+  {
+   "name": "result engine.load_checkpoint",
+   "schema": "engine.schema.json#/$defs/EngineLoadCheckpointResult",
+   "valid": true,
+   "instance": {
+    "active": "ck_01J9",
+    "previous": "ck_base"
+   }
+  },
+  {
+   "name": "success envelope engine.load_checkpoint",
+   "schema": "common.schema.json#/$defs/JsonRpcSuccess",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "result": {
+     "active": "ck_01J9",
+     "previous": "ck_base"
+    }
+   }
+  },
+  {
+   "name": "envelope engine.status",
+   "schema": "common.schema.json#/$defs/JsonRpcRequest",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "method": "engine.status",
+    "params": {
+     "_meta": {
+      "trace_id": "tr_1"
+     }
+    }
+   }
+  },
+  {
+   "name": "params engine.status",
+   "schema": "engine.schema.json#/$defs/EngineStatusParams",
+   "valid": true,
+   "instance": {
+    "_meta": {
+     "trace_id": "tr_1"
+    }
+   }
+  },
+  {
+   "name": "result engine.status",
+   "schema": "engine.schema.json#/$defs/EngineStatusResult",
+   "valid": true,
+   "instance": {
+    "checkpoint_id": "ck_base",
+    "idle_ms": 5200,
+    "queue_depth": 0,
+    "kv_utilization": 0.12
+   }
+  },
+  {
+   "name": "success envelope engine.status",
+   "schema": "common.schema.json#/$defs/JsonRpcSuccess",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "result": {
+     "checkpoint_id": "ck_base",
+     "idle_ms": 5200,
+     "queue_depth": 0,
+     "kv_utilization": 0.12
+    }
+   }
+  },
+  {
+   "name": "notification stream.tool_call",
+   "schema": "common.schema.json#/$defs/JsonRpcNotification",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "method": "stream.tool_call",
+    "params": {
+     "call_id": "call_1",
+     "name": "web.crawl_and_index",
+     "arguments": {
+      "urls": [
+       "https://a.org"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "name": "notification stream.tool_result",
+   "schema": "common.schema.json#/$defs/JsonRpcNotification",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "method": "stream.tool_result",
+    "params": {
+     "call_id": "call_1",
+     "ok": true,
+     "result": {
+      "job_id": "j_1"
+     },
+     "duration_ms": 3120.5
+    }
+   }
+  },
+  {
+   "name": "notification stream.citation",
+   "schema": "common.schema.json#/$defs/JsonRpcNotification",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "method": "stream.citation",
+    "params": {
+     "marker": 1,
+     "doc_id": "d_5c",
+     "chunk_id": "ch_9",
+     "url": "https://example.org/post",
+     "title": "Post"
+    }
+   }
+  },
+  {
+   "name": "notification conn.goaway",
+   "schema": "common.schema.json#/$defs/JsonRpcNotification",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "method": "conn.goaway",
+    "params": {
+     "code": "protocol_error",
+     "reason": "bad magic",
+     "last_stream_id": 7
+    }
+   }
+  },
+  {
+   "name": "citation marker 0",
+   "schema": "common.schema.json#/$defs/Citation",
+   "valid": false,
+   "instance": {
+    "marker": 0,
+    "doc_id": "d_1",
+    "chunk_id": "ch_1",
+    "url": "https://a.org",
+    "title": "t"
+   }
+  },
+  {
+   "name": "ChatRequest minimal",
+   "schema": "ui-sse.schema.json#/$defs/ChatRequest",
+   "valid": true,
+   "instance": {
+    "message": "hi"
+   }
+  },
+  {
+   "name": "ChatRequest full",
+   "schema": "ui-sse.schema.json#/$defs/ChatRequest",
+   "valid": true,
+   "instance": {
+    "conversation_id": "cv_1",
+    "message": "hi",
+    "options": {
+     "temperature": 0.2,
+     "tools": [
+      "memory.hybrid_search"
+     ],
+     "rag": false,
+     "show_thoughts": false
+    }
+   }
+  },
+  {
+   "name": "ChatRequest empty message",
+   "schema": "ui-sse.schema.json#/$defs/ChatRequest",
+   "valid": false,
+   "instance": {
+    "message": ""
+   }
+  },
+  {
+   "name": "ChatRequest rag object",
+   "schema": "ui-sse.schema.json#/$defs/ChatRequest",
+   "valid": false,
+   "instance": {
+    "message": "x",
+    "options": {
+     "rag": {
+      "enabled": true
+     }
+    }
+   }
+  },
+  {
+   "name": "chat sse turn.start",
+   "schema": "ui-sse.schema.json#/$defs/ChatSseEvent",
+   "valid": true,
+   "instance": {
+    "event": "turn.start",
+    "data": {
+     "turn_id": "t_4",
+     "conversation_id": "cv_1",
+     "checkpoint_id": "ck_base"
+    }
+   }
+  },
+  {
+   "name": "chat sse token",
+   "schema": "ui-sse.schema.json#/$defs/ChatSseEvent",
+   "valid": true,
+   "instance": {
+    "event": "token",
+    "data": {
+     "seq": 0,
+     "channel": "thought",
+     "text": "Let me check"
+    }
+   }
+  },
+  {
+   "name": "chat sse tool.call",
+   "schema": "ui-sse.schema.json#/$defs/ChatSseEvent",
+   "valid": true,
+   "instance": {
+    "event": "tool.call",
+    "data": {
+     "call_id": "call_1",
+     "name": "memory.hybrid_search",
+     "arguments": {
+      "query": "x"
+     }
+    }
+   }
+  },
+  {
+   "name": "chat sse tool.result",
+   "schema": "ui-sse.schema.json#/$defs/ChatSseEvent",
+   "valid": true,
+   "instance": {
+    "event": "tool.result",
+    "data": {
+     "call_id": "call_1",
+     "ok": false,
+     "error": {
+      "code": -32006,
+      "message": "budget"
+     },
+     "duration_ms": 1
+    }
+   }
+  },
+  {
+   "name": "chat sse citation",
+   "schema": "ui-sse.schema.json#/$defs/ChatSseEvent",
+   "valid": true,
+   "instance": {
+    "event": "citation",
+    "data": {
+     "marker": 1,
+     "doc_id": "d_5c",
+     "chunk_id": "ch_9",
+     "url": "https://example.org/post",
+     "title": "Post"
+    }
+   }
+  },
+  {
+   "name": "chat sse usage",
+   "schema": "ui-sse.schema.json#/$defs/ChatSseEvent",
+   "valid": true,
+   "instance": {
+    "event": "usage",
+    "data": {
+     "prompt_tokens": 1,
+     "completion_tokens": 1,
+     "cached_tokens": 0,
+     "ttft_ms": 1,
+     "tps": 1
+    }
+   }
+  },
+  {
+   "name": "chat sse turn.end",
+   "schema": "ui-sse.schema.json#/$defs/ChatSseEvent",
+   "valid": true,
+   "instance": {
+    "event": "turn.end",
+    "data": {
+     "finish_reason": "stop"
+    }
+   }
+  },
+  {
+   "name": "chat sse error",
+   "schema": "ui-sse.schema.json#/$defs/ChatSseEvent",
+   "valid": true,
+   "instance": {
+    "event": "error",
+    "data": {
+     "code": -32003,
+     "message": "engine unavailable",
+     "data": {
+      "retryable": true
+     }
+    }
+   }
+  },
+  {
+   "name": "chat sse unknown event",
+   "schema": "ui-sse.schema.json#/$defs/ChatSseEvent",
+   "valid": false,
+   "instance": {
+    "event": "turn.pause",
+    "data": {}
+   }
+  },
+  {
+   "name": "chat sse token on tool channel",
+   "schema": "ui-sse.schema.json#/$defs/ChatSseEvent",
+   "valid": false,
+   "instance": {
+    "event": "token",
+    "data": {
+     "seq": 1,
+     "channel": "tool",
+     "text": "x"
+    }
+   }
+  },
+  {
+   "name": "chat sse mismatched data",
+   "schema": "ui-sse.schema.json#/$defs/ChatSseEvent",
+   "valid": false,
+   "instance": {
+    "event": "turn.end",
+    "data": {
+     "seq": 1
+    }
+   }
+  },
+  {
+   "name": "crawler sse job.update",
+   "schema": "ui-sse.schema.json#/$defs/CrawlerSseEvent",
+   "valid": true,
+   "instance": {
+    "event": "job.update",
+    "data": {
+     "ts": "2026-11-18T03:04:05Z",
+     "job_id": "j_81",
+     "state": "running",
+     "queued": 4,
+     "fetched": 2,
+     "indexed": 1,
+     "skipped": 0
+    }
+   }
+  },
+  {
+   "name": "crawler.event notification job.update",
+   "schema": "common.schema.json#/$defs/JsonRpcNotification",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "method": "crawler.event",
+    "params": {
+     "event": "job.update",
+     "data": {
+      "ts": "2026-11-18T03:04:05Z",
+      "job_id": "j_81",
+      "state": "running",
+      "queued": 4,
+      "fetched": 2,
+      "indexed": 1,
+      "skipped": 0
+     }
+    }
+   }
+  },
+  {
+   "name": "crawler sse url.queued",
+   "schema": "ui-sse.schema.json#/$defs/CrawlerSseEvent",
+   "valid": true,
+   "instance": {
+    "event": "url.queued",
+    "data": {
+     "ts": "2026-11-18T03:04:05Z",
+     "job_id": "j_81",
+     "url": "https://a.org/x",
+     "depth": 1,
+     "parent_url": "https://a.org"
+    }
+   }
+  },
+  {
+   "name": "crawler.event notification url.queued",
+   "schema": "common.schema.json#/$defs/JsonRpcNotification",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "method": "crawler.event",
+    "params": {
+     "event": "url.queued",
+     "data": {
+      "ts": "2026-11-18T03:04:05Z",
+      "job_id": "j_81",
+      "url": "https://a.org/x",
+      "depth": 1,
+      "parent_url": "https://a.org"
+     }
+    }
+   }
+  },
+  {
+   "name": "crawler sse url.fetching",
+   "schema": "ui-sse.schema.json#/$defs/CrawlerSseEvent",
+   "valid": true,
+   "instance": {
+    "event": "url.fetching",
+    "data": {
+     "ts": "2026-11-18T03:04:05Z",
+     "job_id": "j_81",
+     "url": "https://a.org/x",
+     "render": "static"
+    }
+   }
+  },
+  {
+   "name": "crawler.event notification url.fetching",
+   "schema": "common.schema.json#/$defs/JsonRpcNotification",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "method": "crawler.event",
+    "params": {
+     "event": "url.fetching",
+     "data": {
+      "ts": "2026-11-18T03:04:05Z",
+      "job_id": "j_81",
+      "url": "https://a.org/x",
+      "render": "static"
+     }
+    }
+   }
+  },
+  {
+   "name": "crawler sse url.fetched",
+   "schema": "ui-sse.schema.json#/$defs/CrawlerSseEvent",
+   "valid": true,
+   "instance": {
+    "event": "url.fetched",
+    "data": {
+     "ts": "2026-11-18T03:04:05Z",
+     "job_id": "j_81",
+     "url": "https://a.org/x",
+     "status_code": 200,
+     "bytes": 9000,
+     "took_ms": 120,
+     "render": "browser"
+    }
+   }
+  },
+  {
+   "name": "crawler.event notification url.fetched",
+   "schema": "common.schema.json#/$defs/JsonRpcNotification",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "method": "crawler.event",
+    "params": {
+     "event": "url.fetched",
+     "data": {
+      "ts": "2026-11-18T03:04:05Z",
+      "job_id": "j_81",
+      "url": "https://a.org/x",
+      "status_code": 200,
+      "bytes": 9000,
+      "took_ms": 120,
+      "render": "browser"
+     }
+    }
+   }
+  },
+  {
+   "name": "crawler sse url.extracted",
+   "schema": "ui-sse.schema.json#/$defs/CrawlerSseEvent",
+   "valid": true,
+   "instance": {
+    "event": "url.extracted",
+    "data": {
+     "ts": "2026-11-18T03:04:05Z",
+     "job_id": "j_81",
+     "url": "https://a.org/x",
+     "title": "X",
+     "text_bytes": 4000,
+     "chunks": 6
+    }
+   }
+  },
+  {
+   "name": "crawler.event notification url.extracted",
+   "schema": "common.schema.json#/$defs/JsonRpcNotification",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "method": "crawler.event",
+    "params": {
+     "event": "url.extracted",
+     "data": {
+      "ts": "2026-11-18T03:04:05Z",
+      "job_id": "j_81",
+      "url": "https://a.org/x",
+      "title": "X",
+      "text_bytes": 4000,
+      "chunks": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "crawler sse url.indexed",
+   "schema": "ui-sse.schema.json#/$defs/CrawlerSseEvent",
+   "valid": true,
+   "instance": {
+    "event": "url.indexed",
+    "data": {
+     "ts": "2026-11-18T03:04:05Z",
+     "job_id": "j_81",
+     "url": "https://a.org/x",
+     "doc_id": "d_1",
+     "chunks": 6,
+     "took_ms": 80
+    }
+   }
+  },
+  {
+   "name": "crawler.event notification url.indexed",
+   "schema": "common.schema.json#/$defs/JsonRpcNotification",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "method": "crawler.event",
+    "params": {
+     "event": "url.indexed",
+     "data": {
+      "ts": "2026-11-18T03:04:05Z",
+      "job_id": "j_81",
+      "url": "https://a.org/x",
+      "doc_id": "d_1",
+      "chunks": 6,
+      "took_ms": 80
+     }
+    }
+   }
+  },
+  {
+   "name": "crawler sse url.skipped",
+   "schema": "ui-sse.schema.json#/$defs/CrawlerSseEvent",
+   "valid": true,
+   "instance": {
+    "event": "url.skipped",
+    "data": {
+     "ts": "2026-11-18T03:04:05Z",
+     "job_id": "j_81",
+     "url": "https://a.org/y",
+     "reason": "robots"
+    }
+   }
+  },
+  {
+   "name": "crawler.event notification url.skipped",
+   "schema": "common.schema.json#/$defs/JsonRpcNotification",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "method": "crawler.event",
+    "params": {
+     "event": "url.skipped",
+     "data": {
+      "ts": "2026-11-18T03:04:05Z",
+      "job_id": "j_81",
+      "url": "https://a.org/y",
+      "reason": "robots"
+     }
+    }
+   }
+  },
+  {
+   "name": "crawler sse stats",
+   "schema": "ui-sse.schema.json#/$defs/CrawlerSseEvent",
+   "valid": true,
+   "instance": {
+    "event": "stats",
+    "data": {
+     "ts": "2026-11-18T03:04:05Z",
+     "queue": 3,
+     "in_flight": 2,
+     "indexed_docs": 100,
+     "hnsw_nodes": 4100,
+     "fts_rows": 4100
+    }
+   }
+  },
+  {
+   "name": "crawler.event notification stats",
+   "schema": "common.schema.json#/$defs/JsonRpcNotification",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "method": "crawler.event",
+    "params": {
+     "event": "stats",
+     "data": {
+      "ts": "2026-11-18T03:04:05Z",
+      "queue": 3,
+      "in_flight": 2,
+      "indexed_docs": 100,
+      "hnsw_nodes": 4100,
+      "fts_rows": 4100
+     }
+    }
+   }
+  },
+  {
+   "name": "crawler sse stream.reset",
+   "schema": "ui-sse.schema.json#/$defs/CrawlerSseEvent",
+   "valid": true,
+   "instance": {
+    "event": "stream.reset",
+    "data": {
+     "ts": "2026-11-18T03:04:05Z",
+     "reason": "gap"
+    }
+   }
+  },
+  {
+   "name": "crawler.event notification stream.reset",
+   "schema": "common.schema.json#/$defs/JsonRpcNotification",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "method": "crawler.event",
+    "params": {
+     "event": "stream.reset",
+     "data": {
+      "ts": "2026-11-18T03:04:05Z",
+      "reason": "gap"
+     }
+    }
+   }
+  },
+  {
+   "name": "crawler sse bad skip reason",
+   "schema": "ui-sse.schema.json#/$defs/CrawlerSseEvent",
+   "valid": false,
+   "instance": {
+    "event": "url.skipped",
+    "data": {
+     "ts": "2026-11-18T03:04:05Z",
+     "job_id": "j_81",
+     "url": "https://a.org",
+     "reason": "boring"
+    }
+   }
+  },
+  {
+   "name": "crawler sse missing ts",
+   "schema": "ui-sse.schema.json#/$defs/CrawlerSseEvent",
+   "valid": false,
+   "instance": {
+    "event": "url.queued",
+    "data": {
+     "job_id": "j_1",
+     "url": "https://a.org",
+     "depth": 0
+    }
+   }
+  },
+  {
+   "name": "learn sse daemon.state",
+   "schema": "ui-sse.schema.json#/$defs/LearnSseEvent",
+   "valid": true,
+   "instance": {
+    "event": "daemon.state",
+    "data": {
+     "ts": "2026-11-18T03:04:05Z",
+     "state": "training"
+    }
+   }
+  },
+  {
+   "name": "learn.event notification daemon.state",
+   "schema": "common.schema.json#/$defs/JsonRpcNotification",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "method": "learn.event",
+    "params": {
+     "event": "daemon.state",
+     "data": {
+      "ts": "2026-11-18T03:04:05Z",
+      "state": "training"
+     }
+    }
+   }
+  },
+  {
+   "name": "learn sse train.step",
+   "schema": "ui-sse.schema.json#/$defs/LearnSseEvent",
+   "valid": true,
+   "instance": {
+    "event": "train.step",
+    "data": {
+     "ts": "2026-11-18T03:04:05Z",
+     "run_id": "run_7",
+     "step": 120,
+     "loss": 1.84,
+     "lr": 0.0002,
+     "grad_norm": 0.7,
+     "tok_per_s": 5100
+    }
+   }
+  },
+  {
+   "name": "learn.event notification train.step",
+   "schema": "common.schema.json#/$defs/JsonRpcNotification",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "method": "learn.event",
+    "params": {
+     "event": "train.step",
+     "data": {
+      "ts": "2026-11-18T03:04:05Z",
+      "run_id": "run_7",
+      "step": 120,
+      "loss": 1.84,
+      "lr": 0.0002,
+      "grad_norm": 0.7,
+      "tok_per_s": 5100
+     }
+    }
+   }
+  },
+  {
+   "name": "learn sse buffer.stats",
+   "schema": "ui-sse.schema.json#/$defs/LearnSseEvent",
+   "valid": true,
+   "instance": {
+    "event": "buffer.stats",
+    "data": {
+     "ts": "2026-11-18T03:04:05Z",
+     "staged": 10,
+     "quarantined": 40,
+     "accepted": 300,
+     "rejected": 12,
+     "dedup_dropped": 55,
+     "replay_ratio_target": 0.3,
+     "replay_ratio_actual": 0.29
+    }
+   }
+  },
+  {
+   "name": "learn.event notification buffer.stats",
+   "schema": "common.schema.json#/$defs/JsonRpcNotification",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "method": "learn.event",
+    "params": {
+     "event": "buffer.stats",
+     "data": {
+      "ts": "2026-11-18T03:04:05Z",
+      "staged": 10,
+      "quarantined": 40,
+      "accepted": 300,
+      "rejected": 12,
+      "dedup_dropped": 55,
+      "replay_ratio_target": 0.3,
+      "replay_ratio_actual": 0.29
+     }
+    }
+   }
+  },
+  {
+   "name": "learn sse eval.result",
+   "schema": "ui-sse.schema.json#/$defs/LearnSseEvent",
+   "valid": true,
+   "instance": {
+    "event": "eval.result",
+    "data": {
+     "ts": "2026-11-18T03:04:05Z",
+     "checkpoint_id": "ck_01J9",
+     "suite": "anchor-core",
+     "score": 0.61,
+     "baseline": 0.62,
+     "delta": -0.01,
+     "passed": false
+    }
+   }
+  },
+  {
+   "name": "learn.event notification eval.result",
+   "schema": "common.schema.json#/$defs/JsonRpcNotification",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "method": "learn.event",
+    "params": {
+     "event": "eval.result",
+     "data": {
+      "ts": "2026-11-18T03:04:05Z",
+      "checkpoint_id": "ck_01J9",
+      "suite": "anchor-core",
+      "score": 0.61,
+      "baseline": 0.62,
+      "delta": -0.01,
+      "passed": false
+     }
+    }
+   }
+  },
+  {
+   "name": "learn sse ckpt.event",
+   "schema": "ui-sse.schema.json#/$defs/LearnSseEvent",
+   "valid": true,
+   "instance": {
+    "event": "ckpt.event",
+    "data": {
+     "ts": "2026-11-18T03:04:05Z",
+     "checkpoint_id": "ck_01J9",
+     "action": "rejected",
+     "reason": "regression on anchor-core"
+    }
+   }
+  },
+  {
+   "name": "learn.event notification ckpt.event",
+   "schema": "common.schema.json#/$defs/JsonRpcNotification",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "method": "learn.event",
+    "params": {
+     "event": "ckpt.event",
+     "data": {
+      "ts": "2026-11-18T03:04:05Z",
+      "checkpoint_id": "ck_01J9",
+      "action": "rejected",
+      "reason": "regression on anchor-core"
+     }
+    }
+   }
+  },
+  {
+   "name": "learn sse stream.reset",
+   "schema": "ui-sse.schema.json#/$defs/LearnSseEvent",
+   "valid": true,
+   "instance": {
+    "event": "stream.reset",
+    "data": {
+     "ts": "2026-11-18T03:04:05Z",
+     "reason": "backend_restart"
+    }
+   }
+  },
+  {
+   "name": "learn.event notification stream.reset",
+   "schema": "common.schema.json#/$defs/JsonRpcNotification",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "method": "learn.event",
+    "params": {
+     "event": "stream.reset",
+     "data": {
+      "ts": "2026-11-18T03:04:05Z",
+      "reason": "backend_restart"
+     }
+    }
+   }
+  },
+  {
+   "name": "learn sse bad action",
+   "schema": "ui-sse.schema.json#/$defs/LearnSseEvent",
+   "valid": false,
+   "instance": {
+    "event": "ckpt.event",
+    "data": {
+     "ts": "2026-11-18T03:04:05Z",
+     "checkpoint_id": "ck_1",
+     "action": "deleted"
+    }
+   }
+  },
+  {
+   "name": "learn sse replay ratio >1",
+   "schema": "ui-sse.schema.json#/$defs/LearnSseEvent",
+   "valid": false,
+   "instance": {
+    "event": "buffer.stats",
+    "data": {
+     "ts": "2026-11-18T03:04:05Z",
+     "staged": 0,
+     "quarantined": 0,
+     "accepted": 0,
+     "rejected": 0,
+     "dedup_dropped": 0,
+     "replay_ratio_target": 0.3,
+     "replay_ratio_actual": 1.5
+    }
+   }
+  },
+  {
+   "name": "Problem",
+   "schema": "ui-sse.schema.json#/$defs/Problem",
+   "valid": true,
+   "instance": {
+    "type": "about:blank",
+    "title": "Rate limited",
+    "status": 429,
+    "code": -32004,
+    "retry_after_ms": 1500
+   }
+  },
+  {
+   "name": "Problem 200",
+   "schema": "ui-sse.schema.json#/$defs/Problem",
+   "valid": false,
+   "instance": {
+    "type": "about:blank",
+    "title": "ok",
+    "status": 200
+   }
+  },
+  {
+   "name": "MemoryDocResponse",
+   "schema": "ui-sse.schema.json#/$defs/MemoryDocResponse",
+   "valid": true,
+   "instance": {
+    "doc_id": "d_5c",
+    "url": "https://example.org/post",
+    "title": "Post",
+    "fetched_at": "2026-11-18T03:04:05Z",
+    "markdown": "# Post\ntext",
+    "chunks": [
+     {
+      "chunk_id": "ch_9",
+      "start": 0,
+      "end": 12
+     }
+    ]
+   }
+  },
+  {
+   "name": "CheckpointList",
+   "schema": "ui-sse.schema.json#/$defs/CheckpointList",
+   "valid": true,
+   "instance": {
+    "active": "ck_base",
+    "checkpoints": [
+     {
+      "checkpoint_id": "ck_base",
+      "kind": "base",
+      "status": "active",
+      "created_at": "2026-11-18T03:04:05Z"
+     }
+    ]
+   }
+  },
+  {
+   "name": "RollbackResponse",
+   "schema": "ui-sse.schema.json#/$defs/RollbackResponse",
+   "valid": true,
+   "instance": {
+    "active": "ck_base",
+    "previous": "ck_01J9"
+   }
+  },
+  {
+   "name": "LearnStatus",
+   "schema": "ui-sse.schema.json#/$defs/LearnStatus",
+   "valid": true,
+   "instance": {
+    "ts": "2026-11-18T03:04:05Z",
+    "state": "idle_wait",
+    "active_checkpoint_id": "ck_base"
+   }
+  },
+  {
+   "name": "CrawlerJobSubmitRequest",
+   "schema": "ui-sse.schema.json#/$defs/CrawlerJobSubmitRequest",
+   "valid": true,
+   "instance": {
+    "urls": [
+     "https://example.org"
+    ],
+    "depth": 2
+   }
+  },
+  {
+   "name": "envelope crawler.job.submit",
+   "schema": "common.schema.json#/$defs/JsonRpcRequest",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "method": "crawler.job.submit",
+    "params": {
+     "urls": [
+      "https://example.org"
+     ],
+     "future_member": 1,
+     "_meta": {
+      "trace_id": "tr_1"
+     }
+    }
+   }
+  },
+  {
+   "name": "params crawler.job.submit",
+   "schema": "crawler.schema.json#/$defs/CrawlerJobSubmitParams",
+   "valid": true,
+   "instance": {
+    "urls": [
+     "https://example.org"
+    ],
+    "future_member": 1,
+    "_meta": {
+     "trace_id": "tr_1"
+    }
+   }
+  },
+  {
+   "name": "envelope learn.checkpoint.rollback",
+   "schema": "common.schema.json#/$defs/JsonRpcRequest",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "method": "learn.checkpoint.rollback",
+    "params": {
+     "checkpoint_id": "ck_base",
+     "_meta": {
+      "trace_id": "tr_1"
+     }
+    }
+   }
+  },
+  {
+   "name": "params learn.checkpoint.rollback",
+   "schema": "learn.schema.json#/$defs/LearnCheckpointRollbackParams",
+   "valid": true,
+   "instance": {
+    "checkpoint_id": "ck_base",
+    "_meta": {
+     "trace_id": "tr_1"
+    }
+   }
+  },
+  {
+   "name": "envelope learn.pause",
+   "schema": "common.schema.json#/$defs/JsonRpcRequest",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "method": "learn.pause",
+    "params": {
+     "_meta": {
+      "trace_id": "tr_1"
+     }
+    }
+   }
+  },
+  {
+   "name": "params learn.pause",
+   "schema": "learn.schema.json#/$defs/LearnPauseParams",
+   "valid": true,
+   "instance": {
+    "_meta": {
+     "trace_id": "tr_1"
+    }
+   }
+  },
+  {
+   "name": "envelope memory.get_doc",
+   "schema": "common.schema.json#/$defs/JsonRpcRequest",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "method": "memory.get_doc",
+    "params": {
+     "doc_id": "d_1",
+     "_meta": {
+      "trace_id": "tr_1"
+     }
+    }
+   }
+  },
+  {
+   "name": "params memory.get_doc",
+   "schema": "crawler.schema.json#/$defs/MemoryGetDocParams",
+   "valid": true,
+   "instance": {
+    "doc_id": "d_1",
+    "_meta": {
+     "trace_id": "tr_1"
+    }
+   }
+  },
+  {
+   "name": "envelope crawler.subscribe",
+   "schema": "common.schema.json#/$defs/JsonRpcRequest",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "method": "crawler.subscribe",
+    "params": {
+     "_meta": {
+      "trace_id": "tr_1"
+     }
+    }
+   }
+  },
+  {
+   "name": "params crawler.subscribe",
+   "schema": "crawler.schema.json#/$defs/CrawlerSubscribeParams",
+   "valid": true,
+   "instance": {
+    "_meta": {
+     "trace_id": "tr_1"
+    }
+   }
+  },
+  {
+   "name": "envelope learn.subscribe",
+   "schema": "common.schema.json#/$defs/JsonRpcRequest",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "method": "learn.subscribe",
+    "params": {
+     "_meta": {
+      "trace_id": "tr_1"
+     }
+    }
+   }
+  },
+  {
+   "name": "params learn.subscribe",
+   "schema": "learn.schema.json#/$defs/LearnSubscribeParams",
+   "valid": true,
+   "instance": {
+    "_meta": {
+     "trace_id": "tr_1"
+    }
+   }
+  },
+  {
+   "name": "rollback without checkpoint_id",
+   "schema": "learn.schema.json#/$defs/LearnCheckpointRollbackParams",
+   "valid": false,
+   "instance": {
+    "_meta": {
+     "trace_id": "tr_1"
+    }
+   }
+  },
+  {
+   "name": "result crawler.subscribe",
+   "schema": "common.schema.json#/$defs/SubscribeResult",
+   "valid": true,
+   "instance": {
+    "subscribed": true
+   }
+  },
+  {
+   "name": "success envelope crawler.subscribe",
+   "schema": "common.schema.json#/$defs/JsonRpcSuccess",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c-7f3a",
+    "result": {
+     "subscribed": true
+    }
+   }
+  },
+  {
+   "name": "subscribe result false",
+   "schema": "common.schema.json#/$defs/SubscribeResult",
+   "valid": false,
+   "instance": {
+    "subscribed": false
+   }
+  },
+  {
+   "name": "RPC vector payload is a valid request",
+   "schema": "common.schema.json#/$defs/JsonRpcRequest",
+   "valid": true,
+   "instance": {
+    "jsonrpc": "2.0",
+    "id": "c1",
+    "method": "engine.cancel",
+    "params": {
+     "turn_id": "t_1",
+     "_meta": {
+      "trace_id": "tr_1"
+     }
+    }
+   }
+  },
+  {
+   "name": "strict integer: depth=1",
+   "schema": "toolbus.schema.json#/$defs/WebCrawlAndIndexParams",
+   "valid": true,
+   "instance": {
+    "urls": [
+     "https://example.org/post"
+    ],
+    "_meta": {
+     "trace_id": "tr_01J9X",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    },
+    "depth": 1
+   }
+  },
+  {
+   "name": "strict integer: depth=1.0",
+   "schema": "toolbus.schema.json#/$defs/WebCrawlAndIndexParams",
+   "valid": false,
+   "instance": {
+    "urls": [
+     "https://example.org/post"
+    ],
+    "_meta": {
+     "trace_id": "tr_01J9X",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    },
+    "depth": 1.0
+   }
+  },
+  {
+   "name": "strict integer: depth=3.5",
+   "schema": "toolbus.schema.json#/$defs/WebCrawlAndIndexParams",
+   "valid": false,
+   "instance": {
+    "urls": [
+     "https://example.org/post"
+    ],
+    "_meta": {
+     "trace_id": "tr_01J9X",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    },
+    "depth": 3.5
+   }
+  },
+  {
+   "name": "strict integer: depth='1'",
+   "schema": "toolbus.schema.json#/$defs/WebCrawlAndIndexParams",
+   "valid": false,
+   "instance": {
+    "urls": [
+     "https://example.org/post"
+    ],
+    "_meta": {
+     "trace_id": "tr_01J9X",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    },
+    "depth": "1"
+   }
+  },
+  {
+   "name": "strict integer: depth=True",
+   "schema": "toolbus.schema.json#/$defs/WebCrawlAndIndexParams",
+   "valid": false,
+   "instance": {
+    "urls": [
+     "https://example.org/post"
+    ],
+    "_meta": {
+     "trace_id": "tr_01J9X",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    },
+    "depth": true
+   }
+  },
+  {
+   "name": "strict integer: depth=None",
+   "schema": "toolbus.schema.json#/$defs/WebCrawlAndIndexParams",
+   "valid": false,
+   "instance": {
+    "urls": [
+     "https://example.org/post"
+    ],
+    "_meta": {
+     "trace_id": "tr_01J9X",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    },
+    "depth": null
+   }
+  },
+  {
+   "name": "strict integer: depth=-1",
+   "schema": "toolbus.schema.json#/$defs/WebCrawlAndIndexParams",
+   "valid": false,
+   "instance": {
+    "urls": [
+     "https://example.org/post"
+    ],
+    "_meta": {
+     "trace_id": "tr_01J9X",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    },
+    "depth": -1
+   }
+  },
+  {
+   "name": "strict integer: depth=4",
+   "schema": "toolbus.schema.json#/$defs/WebCrawlAndIndexParams",
+   "valid": false,
+   "instance": {
+    "urls": [
+     "https://example.org/post"
+    ],
+    "_meta": {
+     "trace_id": "tr_01J9X",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    },
+    "depth": 4
+   }
+  },
+  {
+   "name": "Timestamp '2026-11-18T03:04:05Z'",
+   "schema": "common.schema.json#/$defs/Timestamp",
+   "valid": true,
+   "instance": "2026-11-18T03:04:05Z"
+  },
+  {
+   "name": "Timestamp '2024-02-29T00:00:00Z'",
+   "schema": "common.schema.json#/$defs/Timestamp",
+   "valid": true,
+   "instance": "2024-02-29T00:00:00Z"
+  },
+  {
+   "name": "Timestamp '2026-11-18T03:04:05.123+10:30'",
+   "schema": "common.schema.json#/$defs/Timestamp",
+   "valid": true,
+   "instance": "2026-11-18T03:04:05.123+10:30"
+  },
+  {
+   "name": "Timestamp '2026-12-31T23:59:60Z'",
+   "schema": "common.schema.json#/$defs/Timestamp",
+   "valid": true,
+   "instance": "2026-12-31T23:59:60Z"
+  },
+  {
+   "name": "Timestamp '2026-13-01T00:00:00Z'",
+   "schema": "common.schema.json#/$defs/Timestamp",
+   "valid": false,
+   "instance": "2026-13-01T00:00:00Z"
+  },
+  {
+   "name": "Timestamp '2026-02-29T00:00:00Z'",
+   "schema": "common.schema.json#/$defs/Timestamp",
+   "valid": false,
+   "instance": "2026-02-29T00:00:00Z"
+  },
+  {
+   "name": "Timestamp '2026-04-31T00:00:00Z'",
+   "schema": "common.schema.json#/$defs/Timestamp",
+   "valid": false,
+   "instance": "2026-04-31T00:00:00Z"
+  },
+  {
+   "name": "Timestamp '2026-11-18T24:00:00Z'",
+   "schema": "common.schema.json#/$defs/Timestamp",
+   "valid": false,
+   "instance": "2026-11-18T24:00:00Z"
+  },
+  {
+   "name": "Timestamp '2026-11-18 03:04:05Z'",
+   "schema": "common.schema.json#/$defs/Timestamp",
+   "valid": false,
+   "instance": "2026-11-18 03:04:05Z"
+  },
+  {
+   "name": "Timestamp '2026-11-18T03:04:05'",
+   "schema": "common.schema.json#/$defs/Timestamp",
+   "valid": false,
+   "instance": "2026-11-18T03:04:05"
+  },
+  {
+   "name": "Timestamp 'yesterday'",
+   "schema": "common.schema.json#/$defs/Timestamp",
+   "valid": false,
+   "instance": "yesterday"
+  },
+  {
+   "name": "Timestamp '2026-11-18T03:04:05Zjunk'",
+   "schema": "common.schema.json#/$defs/Timestamp",
+   "valid": false,
+   "instance": "2026-11-18T03:04:05Zjunk"
+  },
+  {
+   "name": "Timestamp ''",
+   "schema": "common.schema.json#/$defs/Timestamp",
+   "valid": false,
+   "instance": ""
+  },
+  {
+   "name": "base64 content 'YQ=='",
+   "schema": "toolbus.schema.json#/$defs/SandboxFile",
+   "valid": true,
+   "instance": {
+    "path": "a.txt",
+    "content_b64": "YQ=="
+   }
+  },
+  {
+   "name": "base64 content ''",
+   "schema": "toolbus.schema.json#/$defs/SandboxFile",
+   "valid": true,
+   "instance": {
+    "path": "a.txt",
+    "content_b64": ""
+   }
+  },
+  {
+   "name": "base64 content 'YWJj'",
+   "schema": "toolbus.schema.json#/$defs/SandboxFile",
+   "valid": true,
+   "instance": {
+    "path": "a.txt",
+    "content_b64": "YWJj"
+   }
+  },
+  {
+   "name": "base64 content 'YQ='",
+   "schema": "toolbus.schema.json#/$defs/SandboxFile",
+   "valid": false,
+   "instance": {
+    "path": "a.txt",
+    "content_b64": "YQ="
+   }
+  },
+  {
+   "name": "base64 content 'not base64!'",
+   "schema": "toolbus.schema.json#/$defs/SandboxFile",
+   "valid": false,
+   "instance": {
+    "path": "a.txt",
+    "content_b64": "not base64!"
+   }
+  },
+  {
+   "name": "base64 content 'YQ==\\n'",
+   "schema": "toolbus.schema.json#/$defs/SandboxFile",
+   "valid": false,
+   "instance": {
+    "path": "a.txt",
+    "content_b64": "YQ==\n"
+   }
+  },
+  {
+   "name": "base64 content 'Y'",
+   "schema": "toolbus.schema.json#/$defs/SandboxFile",
+   "valid": false,
+   "instance": {
+    "path": "a.txt",
+    "content_b64": "Y"
+   }
+  },
+  {
+   "name": "base64 content 'YW*j'",
+   "schema": "toolbus.schema.json#/$defs/SandboxFile",
+   "valid": false,
+   "instance": {
+    "path": "a.txt",
+    "content_b64": "YW*j"
+   }
+  },
+  {
+   "name": "TraceId 'tr_1'",
+   "schema": "common.schema.json#/$defs/TraceId",
+   "valid": true,
+   "instance": "tr_1"
+  },
+  {
+   "name": "TraceId 'tr_1\\n'",
+   "schema": "common.schema.json#/$defs/TraceId",
+   "valid": false,
+   "instance": "tr_1\n"
+  },
+  {
+   "name": "TraceId 'tr_'",
+   "schema": "common.schema.json#/$defs/TraceId",
+   "valid": false,
+   "instance": "tr_"
+  },
+  {
+   "name": "TraceId 't_1'",
+   "schema": "common.schema.json#/$defs/TraceId",
+   "valid": false,
+   "instance": "t_1"
+  },
+  {
+   "name": "TurnId 't_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'",
+   "schema": "common.schema.json#/$defs/TurnId",
+   "valid": true,
+   "instance": "t_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  {
+   "name": "TurnId 't_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'",
+   "schema": "common.schema.json#/$defs/TurnId",
+   "valid": false,
+   "instance": "t_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  {
+   "name": "SessionId 's_bad id'",
+   "schema": "common.schema.json#/$defs/SessionId",
+   "valid": false,
+   "instance": "s_bad id"
+  },
+  {
+   "name": "CheckpointId 'ck_base'",
+   "schema": "common.schema.json#/$defs/CheckpointId",
+   "valid": true,
+   "instance": "ck_base"
+  },
+  {
+   "name": "CheckpointId 'ck-base'",
+   "schema": "common.schema.json#/$defs/CheckpointId",
+   "valid": false,
+   "instance": "ck-base"
+  },
+  {
+   "name": "DocId 'd_5c'",
+   "schema": "common.schema.json#/$defs/DocId",
+   "valid": true,
+   "instance": "d_5c"
+  },
+  {
+   "name": "ChunkId 'd_5c'",
+   "schema": "common.schema.json#/$defs/ChunkId",
+   "valid": false,
+   "instance": "d_5c"
+  },
+  {
+   "name": "HttpUrl 'https://example.org'",
+   "schema": "common.schema.json#/$defs/HttpUrl",
+   "valid": true,
+   "instance": "https://example.org"
+  },
+  {
+   "name": "HttpUrl 'http://a'",
+   "schema": "common.schema.json#/$defs/HttpUrl",
+   "valid": true,
+   "instance": "http://a"
+  },
+  {
+   "name": "HttpUrl 'https://example.org/a b'",
+   "schema": "common.schema.json#/$defs/HttpUrl",
+   "valid": false,
+   "instance": "https://example.org/a b"
+  },
+  {
+   "name": "HttpUrl 'ftp://example.org'",
+   "schema": "common.schema.json#/$defs/HttpUrl",
+   "valid": false,
+   "instance": "ftp://example.org"
+  },
+  {
+   "name": "HttpUrl 'http://'",
+   "schema": "common.schema.json#/$defs/HttpUrl",
+   "valid": false,
+   "instance": "http://"
+  },
+  {
+   "name": "HttpUrl 'https://example.org/\\n'",
+   "schema": "common.schema.json#/$defs/HttpUrl",
+   "valid": false,
+   "instance": "https://example.org/\n"
+  },
+  {
+   "name": "HttpUrl '//example.org'",
+   "schema": "common.schema.json#/$defs/HttpUrl",
+   "valid": false,
+   "instance": "//example.org"
+  },
+  {
+   "name": "HttpUrl 'https://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'",
+   "schema": "common.schema.json#/$defs/HttpUrl",
+   "valid": false,
+   "instance": "https://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  {
+   "name": "ToolSelection 'auto'",
+   "schema": "engine.schema.json#/$defs/ToolSelection",
+   "valid": true,
+   "instance": "auto"
+  },
+  {
+   "name": "ToolSelection 'none'",
+   "schema": "engine.schema.json#/$defs/ToolSelection",
+   "valid": true,
+   "instance": "none"
+  },
+  {
+   "name": "ToolSelection ['memory.hybrid_search']",
+   "schema": "engine.schema.json#/$defs/ToolSelection",
+   "valid": true,
+   "instance": [
+    "memory.hybrid_search"
+   ]
+  },
+  {
+   "name": "ToolSelection ['web.crawl_and_index', 'memory.hybrid_search']",
+   "schema": "engine.schema.json#/$defs/ToolSelection",
+   "valid": true,
+   "instance": [
+    "web.crawl_and_index",
+    "memory.hybrid_search"
+   ]
+  },
+  {
+   "name": "ToolSelection []",
+   "schema": "engine.schema.json#/$defs/ToolSelection",
+   "valid": false,
+   "instance": []
+  },
+  {
+   "name": "ToolSelection 'AUTO'",
+   "schema": "engine.schema.json#/$defs/ToolSelection",
+   "valid": false,
+   "instance": "AUTO"
+  },
+  {
+   "name": "ToolSelection 'all'",
+   "schema": "engine.schema.json#/$defs/ToolSelection",
+   "valid": false,
+   "instance": "all"
+  },
+  {
+   "name": "ToolSelection ['fs.delete']",
+   "schema": "engine.schema.json#/$defs/ToolSelection",
+   "valid": false,
+   "instance": [
+    "fs.delete"
+   ]
+  },
+  {
+   "name": "ToolSelection ['memory.hybrid_search', 'memory.hybrid_search']",
+   "schema": "engine.schema.json#/$defs/ToolSelection",
+   "valid": false,
+   "instance": [
+    "memory.hybrid_search",
+    "memory.hybrid_search"
+   ]
+  },
+  {
+   "name": "ToolSelection ['bus.list_tools']",
+   "schema": "engine.schema.json#/$defs/ToolSelection",
+   "valid": false,
+   "instance": [
+    "bus.list_tools"
+   ]
+  },
+  {
+   "name": "ToolSelection 5",
+   "schema": "engine.schema.json#/$defs/ToolSelection",
+   "valid": false,
+   "instance": 5
+  },
+  {
+   "name": "temperature 0.0",
+   "schema": "engine.schema.json#/$defs/Sampling",
+   "valid": true,
+   "instance": {
+    "temperature": 0.0,
+    "top_p": 0.9
+   }
+  },
+  {
+   "name": "temperature 5",
+   "schema": "engine.schema.json#/$defs/Sampling",
+   "valid": true,
+   "instance": {
+    "temperature": 5,
+    "top_p": 0.9
+   }
+  },
+  {
+   "name": "temperature 5.01",
+   "schema": "engine.schema.json#/$defs/Sampling",
+   "valid": false,
+   "instance": {
+    "temperature": 5.01,
+    "top_p": 0.9
+   }
+  },
+  {
+   "name": "temperature -0.1",
+   "schema": "engine.schema.json#/$defs/Sampling",
+   "valid": false,
+   "instance": {
+    "temperature": -0.1,
+    "top_p": 0.9
+   }
+  },
+  {
+   "name": "temperature '0.7'",
+   "schema": "engine.schema.json#/$defs/Sampling",
+   "valid": false,
+   "instance": {
+    "temperature": "0.7",
+    "top_p": 0.9
+   }
+  },
+  {
+   "name": "top_p exclusive minimum 0",
+   "schema": "engine.schema.json#/$defs/Sampling",
+   "valid": false,
+   "instance": {
+    "temperature": 0.7,
+    "top_p": 0
+   }
+  },
+  {
+   "name": "top_p exactly 1",
+   "schema": "engine.schema.json#/$defs/Sampling",
+   "valid": true,
+   "instance": {
+    "temperature": 0.7,
+    "top_p": 1
+   }
+  },
+  {
+   "name": "seed 2^53-1",
+   "schema": "engine.schema.json#/$defs/Sampling",
+   "valid": true,
+   "instance": {
+    "temperature": 0.7,
+    "top_p": 1,
+    "seed": 9007199254740991
+   }
+  },
+  {
+   "name": "seed 2^53",
+   "schema": "engine.schema.json#/$defs/Sampling",
+   "valid": false,
+   "instance": {
+    "temperature": 0.7,
+    "top_p": 1,
+    "seed": 9007199254740992
+   }
+  },
+  {
+   "name": "sandbox 17 files",
+   "schema": "toolbus.schema.json#/$defs/SandboxExecutePythonParams",
+   "valid": false,
+   "instance": {
+    "code": "1",
+    "files": [
+     {
+      "path": "f0",
+      "content_b64": ""
+     },
+     {
+      "path": "f1",
+      "content_b64": ""
+     },
+     {
+      "path": "f2",
+      "content_b64": ""
+     },
+     {
+      "path": "f3",
+      "content_b64": ""
+     },
+     {
+      "path": "f4",
+      "content_b64": ""
+     },
+     {
+      "path": "f5",
+      "content_b64": ""
+     },
+     {
+      "path": "f6",
+      "content_b64": ""
+     },
+     {
+      "path": "f7",
+      "content_b64": ""
+     },
+     {
+      "path": "f8",
+      "content_b64": ""
+     },
+     {
+      "path": "f9",
+      "content_b64": ""
+     },
+     {
+      "path": "f10",
+      "content_b64": ""
+     },
+     {
+      "path": "f11",
+      "content_b64": ""
+     },
+     {
+      "path": "f12",
+      "content_b64": ""
+     },
+     {
+      "path": "f13",
+      "content_b64": ""
+     },
+     {
+      "path": "f14",
+      "content_b64": ""
+     },
+     {
+      "path": "f15",
+      "content_b64": ""
+     },
+     {
+      "path": "f16",
+      "content_b64": ""
+     }
+    ],
+    "_meta": {
+     "trace_id": "tr_01J9X",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "sandbox 16 files",
+   "schema": "toolbus.schema.json#/$defs/SandboxExecutePythonParams",
+   "valid": true,
+   "instance": {
+    "code": "1",
+    "files": [
+     {
+      "path": "f0",
+      "content_b64": ""
+     },
+     {
+      "path": "f1",
+      "content_b64": ""
+     },
+     {
+      "path": "f2",
+      "content_b64": ""
+     },
+     {
+      "path": "f3",
+      "content_b64": ""
+     },
+     {
+      "path": "f4",
+      "content_b64": ""
+     },
+     {
+      "path": "f5",
+      "content_b64": ""
+     },
+     {
+      "path": "f6",
+      "content_b64": ""
+     },
+     {
+      "path": "f7",
+      "content_b64": ""
+     },
+     {
+      "path": "f8",
+      "content_b64": ""
+     },
+     {
+      "path": "f9",
+      "content_b64": ""
+     },
+     {
+      "path": "f10",
+      "content_b64": ""
+     },
+     {
+      "path": "f11",
+      "content_b64": ""
+     },
+     {
+      "path": "f12",
+      "content_b64": ""
+     },
+     {
+      "path": "f13",
+      "content_b64": ""
+     },
+     {
+      "path": "f14",
+      "content_b64": ""
+     },
+     {
+      "path": "f15",
+      "content_b64": ""
+     }
+    ],
+    "_meta": {
+     "trace_id": "tr_01J9X",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "crawl 17 urls",
+   "schema": "toolbus.schema.json#/$defs/WebCrawlAndIndexParams",
+   "valid": false,
+   "instance": {
+    "urls": [
+     "https://example.org/0",
+     "https://example.org/1",
+     "https://example.org/2",
+     "https://example.org/3",
+     "https://example.org/4",
+     "https://example.org/5",
+     "https://example.org/6",
+     "https://example.org/7",
+     "https://example.org/8",
+     "https://example.org/9",
+     "https://example.org/10",
+     "https://example.org/11",
+     "https://example.org/12",
+     "https://example.org/13",
+     "https://example.org/14",
+     "https://example.org/15",
+     "https://example.org/16"
+    ],
+    "_meta": {
+     "trace_id": "tr_01J9X",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "crawl 16 urls",
+   "schema": "toolbus.schema.json#/$defs/WebCrawlAndIndexParams",
+   "valid": true,
+   "instance": {
+    "urls": [
+     "https://example.org/0",
+     "https://example.org/1",
+     "https://example.org/2",
+     "https://example.org/3",
+     "https://example.org/4",
+     "https://example.org/5",
+     "https://example.org/6",
+     "https://example.org/7",
+     "https://example.org/8",
+     "https://example.org/9",
+     "https://example.org/10",
+     "https://example.org/11",
+     "https://example.org/12",
+     "https://example.org/13",
+     "https://example.org/14",
+     "https://example.org/15"
+    ],
+    "_meta": {
+     "trace_id": "tr_01J9X",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "search query 2048 chars",
+   "schema": "toolbus.schema.json#/$defs/MemoryHybridSearchParams",
+   "valid": true,
+   "instance": {
+    "query": "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+    "_meta": {
+     "trace_id": "tr_01J9X",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "search query 2049 chars",
+   "schema": "toolbus.schema.json#/$defs/MemoryHybridSearchParams",
+   "valid": false,
+   "instance": {
+    "query": "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+    "_meta": {
+     "trace_id": "tr_01J9X",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "search query unicode 2048 chars (4096 bytes)",
+   "schema": "toolbus.schema.json#/$defs/MemoryHybridSearchParams",
+   "valid": true,
+   "instance": {
+    "query": "éééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééé",
+    "_meta": {
+     "trace_id": "tr_01J9X",
+     "session_id": "s_1",
+     "turn_id": "t_4",
+     "deadline_unix_ms": 1763432000000
+    }
+   }
+  },
+  {
+   "name": "search wrong meta kind (Meta lacks turn fields)",
+   "schema": "toolbus.schema.json#/$defs/MemoryHybridSearchParams",
+   "valid": false,
+   "instance": {
+    "query": "x",
+    "_meta": {
+     "trace_id": "tr_1"
+    }
+   }
+  },
+  {
+   "name": "bus.list_tools rejects extra member",
+   "schema": "toolbus.schema.json#/$defs/BusListToolsParams",
+   "valid": false,
+   "instance": {
+    "_meta": {
+     "trace_id": "tr_1"
+    },
+    "x": 1
+   }
+  },
+  {
+   "name": "sample gate must be quarantine",
+   "schema": "toolbus.schema.json#/$defs/TrainingCommitVerifiedSampleResult",
+   "valid": false,
+   "instance": {
+    "sample_id": "smp_1",
+    "status": "staged",
+    "gate": "buffer"
+   }
+  },
+  {
+   "name": "sandbox exit_code may be null",
+   "schema": "toolbus.schema.json#/$defs/SandboxExecutePythonResult",
+   "valid": true,
+   "instance": {
+    "exit_code": null,
+    "stdout": "",
+    "stderr": "",
+    "truncated": true,
+    "duration_ms": 10000,
+    "killed_by": "timeout"
+   }
+  },
+  {
+   "name": "sandbox killed_by unknown",
+   "schema": "toolbus.schema.json#/$defs/SandboxExecutePythonResult",
+   "valid": false,
+   "instance": {
+    "exit_code": null,
+    "stdout": "",
+    "stderr": "",
+    "truncated": true,
+    "duration_ms": 1,
+    "killed_by": "sigkill"
+   }
+  },
+  {
+   "name": "crawl result state enum",
+   "schema": "toolbus.schema.json#/$defs/WebCrawlAndIndexResult",
+   "valid": false,
+   "instance": {
+    "job_id": "j_1",
+    "state": "done",
+    "pages": [],
+    "stats": {
+     "fetched": 0,
+     "indexed": 0,
+     "skipped": 0,
+     "took_ms": 1
+    }
+   }
+  },
+  {
+   "name": "crawl result negative count",
+   "schema": "toolbus.schema.json#/$defs/WebCrawlAndIndexResult",
+   "valid": false,
+   "instance": {
+    "job_id": "j_1",
+    "state": "complete",
+    "pages": [],
+    "stats": {
+     "fetched": -1,
+     "indexed": 0,
+     "skipped": 0,
+     "took_ms": 1
+    }
+   }
+  },
+  {
+   "name": "error object negative-int code",
+   "schema": "common.schema.json#/$defs/ErrorObject",
+   "valid": true,
+   "instance": {
+    "code": -32005,
+    "message": "denied",
+    "data": {
+     "reason": "private_address",
+     "retryable": false
+    }
+   }
+  },
+  {
+   "name": "error object float code",
+   "schema": "common.schema.json#/$defs/ErrorObject",
+   "valid": false,
+   "instance": {
+    "code": -32005.5,
+    "message": "x"
+   }
+  },
+  {
+   "name": "error object message too long",
+   "schema": "common.schema.json#/$defs/ErrorObject",
+   "valid": false,
+   "instance": {
+    "code": 1,
+    "message": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  },
+  {
+   "name": "error data unknown keys allowed",
+   "schema": "common.schema.json#/$defs/ErrorData",
+   "valid": true,
+   "instance": {
+    "anything": [
+     1,
+     2,
+     3
+    ],
+    "retryable": true
+   }
+  },
+  {
+   "name": "error data reason too long",
+   "schema": "common.schema.json#/$defs/ErrorData",
+   "valid": false,
+   "instance": {
+    "reason": "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr"
+   }
+  }
+ ]
+}
