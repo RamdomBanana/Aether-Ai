@@ -1,0 +1,411 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.aether.invalid/v1/ui-sse.schema.json",
+  "title": "AETHER UI <-> gateway contract",
+  "description": "HTTP/1.1 request and response bodies and the three Server-Sent Events catalogs served by the gateway. AUTH: every request carries 'Authorization: Bearer <token>' (the token is read from run/session.token by Tauri, or exchanged once via the loopback bootstrap URL in a browser). SSE is consumed with fetch stream parsing because EventSource cannot set headers. SSE FRAMING: each message is 'event: <event>', then 'data: <single-line JSON of the data member>', then a blank line. Each catalog below is a oneOf of {event, data} objects, which codegen turns into a discriminated union on event. Crawler and learn streams also carry 'id: <n>', a decimal sequence assigned by the gateway and replayable via Last-Event-ID from a 1024-event ring buffer; if the buffer cannot satisfy the resume point the gateway sends stream.reset and the client re-fetches a snapshot. On subscribe the gateway first sends the current snapshot events (crawler: stats; learn: daemon.state and buffer.stats). Chat streams are NOT resumable: a client disconnect makes the gateway send engine.cancel for the turn. The gateway writes a comment line ': hb' every 15 s. Channel 'tool' TOKENS frames never become token events (tool activity is surfaced as tool.call and tool.result); channel 'thought' becomes token events only when options.show_thoughts is true. ERRORS: every non-2xx response is application/problem+json (Problem). Mid-stream failures arrive as an 'error' event followed by connection close. x-aether-http-routes is the gateway's route table: each route names the RPC method it proxies, and the gateway forwards it to the server whose route lists 'gateway' as a peer (see common.schema.json). Typed event payloads for crawler.event and learn.event notifications are these same CrawlerSseEvent and LearnSseEvent unions, so the gateway forwards them without reshaping.",
+  "x-aether-schema-version": "1.0.0",
+  "x-aether-http-routes": [
+    { "operation": "chat.send", "method": "POST", "path": "/v1/chat", "request": "#/$defs/ChatRequest", "response": { "status": 200, "sse": "#/$defs/ChatSseEvent" }, "rpc": "engine.generate" },
+    { "operation": "chat.cancel", "method": "POST", "path": "/v1/chat/{turn_id}/cancel", "path_params": { "turn_id": "common.schema.json#/$defs/TurnId" }, "response": { "status": 200, "json": "engine.schema.json#/$defs/EngineCancelResult" }, "rpc": "engine.cancel" },
+    { "operation": "memory.get_doc", "method": "GET", "path": "/v1/memory/docs/{doc_id}", "path_params": { "doc_id": "common.schema.json#/$defs/DocId" }, "response": { "status": 200, "json": "#/$defs/MemoryDocResponse" }, "rpc": "memory.get_doc" },
+    { "operation": "crawler.events", "method": "GET", "path": "/v1/crawler/events", "response": { "status": 200, "sse": "#/$defs/CrawlerSseEvent" }, "rpc": "crawler.subscribe" },
+    { "operation": "crawler.stats", "method": "GET", "path": "/v1/crawler/stats", "response": { "status": 200, "json": "#/$defs/CrawlerStats" }, "rpc": "memory.stats" },
+    { "operation": "crawler.job.submit", "method": "POST", "path": "/v1/crawler/jobs", "request": "#/$defs/CrawlerJobSubmitRequest", "response": { "status": 202, "json": "#/$defs/CrawlerJobAccepted" }, "rpc": "crawler.job.submit" },
+    { "operation": "crawler.job.status", "method": "GET", "path": "/v1/crawler/jobs/{job_id}", "path_params": { "job_id": "common.schema.json#/$defs/JobId" }, "response": { "status": 200, "json": "#/$defs/JobSnapshot" }, "rpc": "crawler.job.status" },
+    { "operation": "crawler.job.cancel", "method": "DELETE", "path": "/v1/crawler/jobs/{job_id}", "path_params": { "job_id": "common.schema.json#/$defs/JobId" }, "response": { "status": 200, "json": "#/$defs/JobCancelResponse" }, "rpc": "crawler.job.cancel" },
+    { "operation": "learn.events", "method": "GET", "path": "/v1/learn/events", "response": { "status": 200, "sse": "#/$defs/LearnSseEvent" }, "rpc": "learn.subscribe" },
+    { "operation": "learn.status", "method": "GET", "path": "/v1/learn/status", "response": { "status": 200, "json": "#/$defs/LearnStatus" }, "rpc": "learn.status" },
+    { "operation": "learn.checkpoints", "method": "GET", "path": "/v1/learn/checkpoints", "response": { "status": 200, "json": "#/$defs/CheckpointList" }, "rpc": "learn.checkpoint.list" },
+    { "operation": "learn.rollback", "method": "POST", "path": "/v1/learn/checkpoints/{checkpoint_id}/rollback", "path_params": { "checkpoint_id": "common.schema.json#/$defs/CheckpointId" }, "response": { "status": 200, "json": "#/$defs/RollbackResponse" }, "rpc": "learn.checkpoint.rollback" },
+    { "operation": "learn.pause", "method": "POST", "path": "/v1/learn/pause", "response": { "status": 200, "json": "#/$defs/LearnStatus" }, "rpc": "learn.pause" },
+    { "operation": "learn.resume", "method": "POST", "path": "/v1/learn/resume", "response": { "status": 200, "json": "#/$defs/LearnStatus" }, "rpc": "learn.resume" }
+  ],
+  "$defs": {
+    "Problem": {
+      "type": "object",
+      "description": "RFC 9457 problem details. code is the JSON-RPC error code when the failure originated in a backend.",
+      "properties": {
+        "type": { "type": "string", "maxLength": 256, "default": "about:blank" },
+        "title": { "type": "string", "maxLength": 256 },
+        "status": { "type": "integer", "minimum": 400, "maximum": 599 },
+        "detail": { "type": "string", "maxLength": 1024 },
+        "code": { "type": "integer" },
+        "trace_id": { "$ref": "common.schema.json#/$defs/TraceId" },
+        "retry_after_ms": { "$ref": "common.schema.json#/$defs/DurationMs" }
+      },
+      "required": ["type", "title", "status"],
+      "additionalProperties": false
+    },
+
+    "ChatOptions": {
+      "type": "object",
+      "properties": {
+        "temperature": { "type": "number", "minimum": 0, "maximum": 5, "default": 0.7 },
+        "top_p": { "type": "number", "exclusiveMinimum": 0, "maximum": 1, "default": 0.95 },
+        "max_new_tokens": { "type": "integer", "minimum": 1, "maximum": 131072, "default": 2048 },
+        "tools": { "$ref": "engine.schema.json#/$defs/ToolSelection", "default": "auto" },
+        "rag": { "type": "boolean", "default": true, "description": "The gateway maps true to {enabled: true, top_k: 8} for engine.generate." },
+        "show_thoughts": { "type": "boolean", "default": true }
+      },
+      "additionalProperties": false
+    },
+    "ChatRequest": {
+      "type": "object",
+      "description": "POST /v1/chat. A missing conversation_id starts a new conversation; the id arrives in turn.start.",
+      "properties": {
+        "conversation_id": { "$ref": "common.schema.json#/$defs/ConversationId" },
+        "message": { "type": "string", "minLength": 1, "maxLength": 262144 },
+        "options": { "$ref": "#/$defs/ChatOptions" }
+      },
+      "required": ["message"],
+      "additionalProperties": false
+    },
+
+    "TurnStartData": {
+      "type": "object",
+      "properties": {
+        "turn_id": { "$ref": "common.schema.json#/$defs/TurnId" },
+        "conversation_id": { "$ref": "common.schema.json#/$defs/ConversationId" },
+        "checkpoint_id": { "$ref": "common.schema.json#/$defs/CheckpointId" }
+      },
+      "required": ["turn_id", "conversation_id", "checkpoint_id"],
+      "additionalProperties": false
+    },
+    "TokenData": {
+      "type": "object",
+      "properties": {
+        "seq": { "type": "integer", "minimum": 0 },
+        "channel": { "enum": ["answer", "thought"] },
+        "text": { "type": "string" }
+      },
+      "required": ["seq", "channel", "text"],
+      "additionalProperties": false
+    },
+    "TurnEndData": {
+      "type": "object",
+      "properties": { "finish_reason": { "$ref": "common.schema.json#/$defs/FinishReason" } },
+      "required": ["finish_reason"],
+      "additionalProperties": false
+    },
+    "SseErrorData": {
+      "type": "object",
+      "properties": {
+        "code": { "type": "integer" },
+        "message": { "type": "string", "maxLength": 1024 },
+        "data": { "$ref": "common.schema.json#/$defs/ErrorData" }
+      },
+      "required": ["code", "message"],
+      "additionalProperties": false
+    },
+    "ChatSseEvent": {
+      "description": "Order: turn.start, then any interleaving of token, tool.call, tool.result and citation, then usage, then turn.end. An error event ends the stream instead of turn.end.",
+      "oneOf": [
+        { "title": "TurnStartEvent", "type": "object", "properties": { "event": { "const": "turn.start" }, "data": { "$ref": "#/$defs/TurnStartData" } }, "required": ["event", "data"], "additionalProperties": false },
+        { "title": "TokenEvent", "type": "object", "properties": { "event": { "const": "token" }, "data": { "$ref": "#/$defs/TokenData" } }, "required": ["event", "data"], "additionalProperties": false },
+        { "title": "ToolCallSseEvent", "type": "object", "properties": { "event": { "const": "tool.call" }, "data": { "$ref": "common.schema.json#/$defs/ToolCallEvent" } }, "required": ["event", "data"], "additionalProperties": false },
+        { "title": "ToolResultSseEvent", "type": "object", "properties": { "event": { "const": "tool.result" }, "data": { "$ref": "common.schema.json#/$defs/ToolResultEvent" } }, "required": ["event", "data"], "additionalProperties": false },
+        { "title": "CitationSseEvent", "type": "object", "properties": { "event": { "const": "citation" }, "data": { "$ref": "common.schema.json#/$defs/Citation" } }, "required": ["event", "data"], "additionalProperties": false },
+        { "title": "UsageSseEvent", "type": "object", "properties": { "event": { "const": "usage" }, "data": { "$ref": "common.schema.json#/$defs/Usage" } }, "required": ["event", "data"], "additionalProperties": false },
+        { "title": "TurnEndEvent", "type": "object", "properties": { "event": { "const": "turn.end" }, "data": { "$ref": "#/$defs/TurnEndData" } }, "required": ["event", "data"], "additionalProperties": false },
+        { "title": "ErrorSseEvent", "type": "object", "properties": { "event": { "const": "error" }, "data": { "$ref": "#/$defs/SseErrorData" } }, "required": ["event", "data"], "additionalProperties": false }
+      ]
+    },
+
+    "JobState": { "enum": ["queued", "running", "complete", "partial", "cancelled", "failed"] },
+    "SkipReason": { "enum": ["robots", "duplicate", "scope", "depth", "error"] },
+    "RenderMode": { "enum": ["static", "browser"], "description": "How a page was actually rendered." },
+    "StreamResetData": {
+      "type": "object",
+      "description": "The client MUST discard incremental state and re-fetch a snapshot (GET /v1/crawler/stats, /v1/learn/status, /v1/learn/checkpoints).",
+      "properties": {
+        "ts": { "$ref": "common.schema.json#/$defs/Timestamp" },
+        "reason": { "enum": ["gap", "backend_restart"] }
+      },
+      "required": ["ts", "reason"],
+      "additionalProperties": false
+    },
+
+    "JobSnapshot": {
+      "type": "object",
+      "description": "Payload of the job.update event and the response of GET /v1/crawler/jobs/{job_id}.",
+      "properties": {
+        "ts": { "$ref": "common.schema.json#/$defs/Timestamp" },
+        "job_id": { "$ref": "common.schema.json#/$defs/JobId" },
+        "state": { "$ref": "#/$defs/JobState" },
+        "queued": { "type": "integer", "minimum": 0 },
+        "fetched": { "type": "integer", "minimum": 0 },
+        "indexed": { "type": "integer", "minimum": 0 },
+        "skipped": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["ts", "job_id", "state", "queued", "fetched", "indexed", "skipped"],
+      "additionalProperties": false
+    },
+    "UrlQueuedData": {
+      "type": "object",
+      "properties": {
+        "ts": { "$ref": "common.schema.json#/$defs/Timestamp" },
+        "job_id": { "$ref": "common.schema.json#/$defs/JobId" },
+        "url": { "$ref": "common.schema.json#/$defs/HttpUrl" },
+        "depth": { "type": "integer", "minimum": 0, "maximum": 3 },
+        "parent_url": { "$ref": "common.schema.json#/$defs/HttpUrl" }
+      },
+      "required": ["ts", "job_id", "url", "depth"],
+      "additionalProperties": false
+    },
+    "UrlFetchingData": {
+      "type": "object",
+      "properties": {
+        "ts": { "$ref": "common.schema.json#/$defs/Timestamp" },
+        "job_id": { "$ref": "common.schema.json#/$defs/JobId" },
+        "url": { "$ref": "common.schema.json#/$defs/HttpUrl" },
+        "render": { "$ref": "#/$defs/RenderMode" }
+      },
+      "required": ["ts", "job_id", "url", "render"],
+      "additionalProperties": false
+    },
+    "UrlFetchedData": {
+      "type": "object",
+      "properties": {
+        "ts": { "$ref": "common.schema.json#/$defs/Timestamp" },
+        "job_id": { "$ref": "common.schema.json#/$defs/JobId" },
+        "url": { "$ref": "common.schema.json#/$defs/HttpUrl" },
+        "status_code": { "type": "integer", "minimum": 100, "maximum": 599 },
+        "bytes": { "type": "integer", "minimum": 0 },
+        "took_ms": { "type": "integer", "minimum": 0 },
+        "render": { "$ref": "#/$defs/RenderMode" }
+      },
+      "required": ["ts", "job_id", "url", "status_code", "bytes", "took_ms", "render"],
+      "additionalProperties": false
+    },
+    "UrlExtractedData": {
+      "type": "object",
+      "properties": {
+        "ts": { "$ref": "common.schema.json#/$defs/Timestamp" },
+        "job_id": { "$ref": "common.schema.json#/$defs/JobId" },
+        "url": { "$ref": "common.schema.json#/$defs/HttpUrl" },
+        "title": { "type": "string", "maxLength": 512 },
+        "text_bytes": { "type": "integer", "minimum": 0 },
+        "chunks": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["ts", "job_id", "url", "text_bytes", "chunks"],
+      "additionalProperties": false
+    },
+    "UrlIndexedData": {
+      "type": "object",
+      "properties": {
+        "ts": { "$ref": "common.schema.json#/$defs/Timestamp" },
+        "job_id": { "$ref": "common.schema.json#/$defs/JobId" },
+        "url": { "$ref": "common.schema.json#/$defs/HttpUrl" },
+        "doc_id": { "$ref": "common.schema.json#/$defs/DocId" },
+        "chunks": { "type": "integer", "minimum": 0 },
+        "took_ms": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["ts", "job_id", "url", "doc_id", "chunks", "took_ms"],
+      "additionalProperties": false
+    },
+    "UrlSkippedData": {
+      "type": "object",
+      "properties": {
+        "ts": { "$ref": "common.schema.json#/$defs/Timestamp" },
+        "job_id": { "$ref": "common.schema.json#/$defs/JobId" },
+        "url": { "$ref": "common.schema.json#/$defs/HttpUrl" },
+        "reason": { "$ref": "#/$defs/SkipReason" },
+        "detail": { "type": "string", "maxLength": 512 }
+      },
+      "required": ["ts", "job_id", "url", "reason"],
+      "additionalProperties": false
+    },
+    "CrawlerStats": {
+      "type": "object",
+      "description": "Payload of the stats event and the response of GET /v1/crawler/stats.",
+      "properties": {
+        "ts": { "$ref": "common.schema.json#/$defs/Timestamp" },
+        "queue": { "type": "integer", "minimum": 0 },
+        "in_flight": { "type": "integer", "minimum": 0 },
+        "indexed_docs": { "type": "integer", "minimum": 0 },
+        "hnsw_nodes": { "type": "integer", "minimum": 0 },
+        "fts_rows": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["ts", "queue", "in_flight", "indexed_docs", "hnsw_nodes", "fts_rows"],
+      "additionalProperties": false
+    },
+    "CrawlerSseEvent": {
+      "oneOf": [
+        { "title": "JobUpdateEvent", "type": "object", "properties": { "event": { "const": "job.update" }, "data": { "$ref": "#/$defs/JobSnapshot" } }, "required": ["event", "data"], "additionalProperties": false },
+        { "title": "UrlQueuedEvent", "type": "object", "properties": { "event": { "const": "url.queued" }, "data": { "$ref": "#/$defs/UrlQueuedData" } }, "required": ["event", "data"], "additionalProperties": false },
+        { "title": "UrlFetchingEvent", "type": "object", "properties": { "event": { "const": "url.fetching" }, "data": { "$ref": "#/$defs/UrlFetchingData" } }, "required": ["event", "data"], "additionalProperties": false },
+        { "title": "UrlFetchedEvent", "type": "object", "properties": { "event": { "const": "url.fetched" }, "data": { "$ref": "#/$defs/UrlFetchedData" } }, "required": ["event", "data"], "additionalProperties": false },
+        { "title": "UrlExtractedEvent", "type": "object", "properties": { "event": { "const": "url.extracted" }, "data": { "$ref": "#/$defs/UrlExtractedData" } }, "required": ["event", "data"], "additionalProperties": false },
+        { "title": "UrlIndexedEvent", "type": "object", "properties": { "event": { "const": "url.indexed" }, "data": { "$ref": "#/$defs/UrlIndexedData" } }, "required": ["event", "data"], "additionalProperties": false },
+        { "title": "UrlSkippedEvent", "type": "object", "properties": { "event": { "const": "url.skipped" }, "data": { "$ref": "#/$defs/UrlSkippedData" } }, "required": ["event", "data"], "additionalProperties": false },
+        { "title": "CrawlerStatsEvent", "type": "object", "properties": { "event": { "const": "stats" }, "data": { "$ref": "#/$defs/CrawlerStats" } }, "required": ["event", "data"], "additionalProperties": false },
+        { "title": "CrawlerStreamResetEvent", "type": "object", "properties": { "event": { "const": "stream.reset" }, "data": { "$ref": "#/$defs/StreamResetData" } }, "required": ["event", "data"], "additionalProperties": false }
+      ]
+    },
+
+    "DaemonState": { "enum": ["idle_wait", "curating", "training", "evaluating", "paused"] },
+    "DaemonStateData": {
+      "type": "object",
+      "properties": {
+        "ts": { "$ref": "common.schema.json#/$defs/Timestamp" },
+        "state": { "$ref": "#/$defs/DaemonState" },
+        "reason": { "type": "string", "maxLength": 128 }
+      },
+      "required": ["ts", "state"],
+      "additionalProperties": false
+    },
+    "TrainStepData": {
+      "type": "object",
+      "properties": {
+        "ts": { "$ref": "common.schema.json#/$defs/Timestamp" },
+        "run_id": { "$ref": "common.schema.json#/$defs/RunId" },
+        "step": { "type": "integer", "minimum": 0 },
+        "loss": { "type": "number" },
+        "lr": { "type": "number", "minimum": 0 },
+        "grad_norm": { "type": "number", "minimum": 0 },
+        "tok_per_s": { "type": "number", "minimum": 0 }
+      },
+      "required": ["ts", "run_id", "step", "loss", "lr", "grad_norm", "tok_per_s"],
+      "additionalProperties": false
+    },
+    "BufferStatsData": {
+      "type": "object",
+      "properties": {
+        "ts": { "$ref": "common.schema.json#/$defs/Timestamp" },
+        "staged": { "type": "integer", "minimum": 0 },
+        "quarantined": { "type": "integer", "minimum": 0 },
+        "accepted": { "type": "integer", "minimum": 0 },
+        "rejected": { "type": "integer", "minimum": 0 },
+        "dedup_dropped": { "type": "integer", "minimum": 0 },
+        "replay_ratio_target": { "type": "number", "minimum": 0, "maximum": 1, "default": 0.3 },
+        "replay_ratio_actual": { "type": "number", "minimum": 0, "maximum": 1 }
+      },
+      "required": ["ts", "staged", "quarantined", "accepted", "rejected", "dedup_dropped", "replay_ratio_target", "replay_ratio_actual"],
+      "additionalProperties": false
+    },
+    "EvalResultData": {
+      "type": "object",
+      "properties": {
+        "ts": { "$ref": "common.schema.json#/$defs/Timestamp" },
+        "checkpoint_id": { "$ref": "common.schema.json#/$defs/CheckpointId" },
+        "suite": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "score": { "type": "number" },
+        "baseline": { "type": "number" },
+        "delta": { "type": "number" },
+        "passed": { "type": "boolean" }
+      },
+      "required": ["ts", "checkpoint_id", "suite", "score", "baseline", "delta", "passed"],
+      "additionalProperties": false
+    },
+    "CkptEventData": {
+      "type": "object",
+      "properties": {
+        "ts": { "$ref": "common.schema.json#/$defs/Timestamp" },
+        "checkpoint_id": { "$ref": "common.schema.json#/$defs/CheckpointId" },
+        "action": { "enum": ["created", "promoted", "rejected", "rolled_back"] },
+        "reason": { "type": "string", "maxLength": 256 }
+      },
+      "required": ["ts", "checkpoint_id", "action"],
+      "additionalProperties": false
+    },
+    "LearnSseEvent": {
+      "oneOf": [
+        { "title": "DaemonStateEvent", "type": "object", "properties": { "event": { "const": "daemon.state" }, "data": { "$ref": "#/$defs/DaemonStateData" } }, "required": ["event", "data"], "additionalProperties": false },
+        { "title": "TrainStepEvent", "type": "object", "properties": { "event": { "const": "train.step" }, "data": { "$ref": "#/$defs/TrainStepData" } }, "required": ["event", "data"], "additionalProperties": false },
+        { "title": "BufferStatsEvent", "type": "object", "properties": { "event": { "const": "buffer.stats" }, "data": { "$ref": "#/$defs/BufferStatsData" } }, "required": ["event", "data"], "additionalProperties": false },
+        { "title": "EvalResultEvent", "type": "object", "properties": { "event": { "const": "eval.result" }, "data": { "$ref": "#/$defs/EvalResultData" } }, "required": ["event", "data"], "additionalProperties": false },
+        { "title": "CkptEvent", "type": "object", "properties": { "event": { "const": "ckpt.event" }, "data": { "$ref": "#/$defs/CkptEventData" } }, "required": ["event", "data"], "additionalProperties": false },
+        { "title": "LearnStreamResetEvent", "type": "object", "properties": { "event": { "const": "stream.reset" }, "data": { "$ref": "#/$defs/StreamResetData" } }, "required": ["event", "data"], "additionalProperties": false }
+      ]
+    },
+
+    "CrawlerJobSubmitRequest": {
+      "type": "object",
+      "description": "POST /v1/crawler/jobs, manual seeding from the UI. Asynchronous: the response is 202 and progress arrives on the crawler event stream.",
+      "properties": {
+        "urls": { "type": "array", "minItems": 1, "maxItems": 16, "uniqueItems": true, "items": { "$ref": "common.schema.json#/$defs/HttpUrl" } },
+        "depth": { "type": "integer", "minimum": 0, "maximum": 3, "default": 0 },
+        "max_pages": { "type": "integer", "minimum": 1, "maximum": 200, "default": 25 },
+        "same_domain_only": { "type": "boolean", "default": true },
+        "render": { "enum": ["auto", "static", "browser"], "default": "auto" }
+      },
+      "required": ["urls"],
+      "additionalProperties": false
+    },
+    "CrawlerJobAccepted": {
+      "type": "object",
+      "properties": { "job_id": { "$ref": "common.schema.json#/$defs/JobId" } },
+      "required": ["job_id"],
+      "additionalProperties": false
+    },
+    "JobCancelResponse": {
+      "type": "object",
+      "properties": { "cancelled": { "type": "boolean" } },
+      "required": ["cancelled"],
+      "additionalProperties": false
+    },
+    "MemoryDocChunk": {
+      "type": "object",
+      "description": "start and end are offsets in Unicode code points into MemoryDocResponse.markdown, with end exclusive. The UI uses them to highlight the cited span.",
+      "properties": {
+        "chunk_id": { "$ref": "common.schema.json#/$defs/ChunkId" },
+        "start": { "type": "integer", "minimum": 0 },
+        "end": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["chunk_id", "start", "end"],
+      "additionalProperties": false
+    },
+    "MemoryDocResponse": {
+      "type": "object",
+      "description": "Citation click-through. markdown is the extracted main content, which is untrusted web text: the UI renders it as inert Markdown and never executes embedded HTML.",
+      "properties": {
+        "doc_id": { "$ref": "common.schema.json#/$defs/DocId" },
+        "url": { "$ref": "common.schema.json#/$defs/HttpUrl" },
+        "final_url": { "$ref": "common.schema.json#/$defs/HttpUrl" },
+        "title": { "type": "string", "maxLength": 512 },
+        "fetched_at": { "$ref": "common.schema.json#/$defs/Timestamp" },
+        "markdown": { "type": "string" },
+        "chunks": { "type": "array", "maxItems": 10000, "items": { "$ref": "#/$defs/MemoryDocChunk" } }
+      },
+      "required": ["doc_id", "url", "title", "fetched_at", "markdown", "chunks"],
+      "additionalProperties": false
+    },
+
+    "CheckpointInfo": {
+      "type": "object",
+      "properties": {
+        "checkpoint_id": { "$ref": "common.schema.json#/$defs/CheckpointId" },
+        "parent_id": { "$ref": "common.schema.json#/$defs/CheckpointId" },
+        "kind": { "enum": ["base", "lora", "dora", "dpo"] },
+        "status": { "enum": ["candidate", "active", "rejected", "retired"] },
+        "created_at": { "$ref": "common.schema.json#/$defs/Timestamp" },
+        "score": { "type": "number" },
+        "baseline": { "type": "number" },
+        "delta": { "type": "number" }
+      },
+      "required": ["checkpoint_id", "kind", "status", "created_at"],
+      "additionalProperties": false
+    },
+    "CheckpointList": {
+      "type": "object",
+      "properties": {
+        "active": { "$ref": "common.schema.json#/$defs/CheckpointId" },
+        "checkpoints": { "type": "array", "maxItems": 1000, "items": { "$ref": "#/$defs/CheckpointInfo" } }
+      },
+      "required": ["active", "checkpoints"],
+      "additionalProperties": false
+    },
+    "RollbackResponse": { "$ref": "engine.schema.json#/$defs/EngineLoadCheckpointResult", "description": "active is the checkpoint rolled back to; previous is the one that was active." },
+    "LearnStatus": {
+      "type": "object",
+      "properties": {
+        "ts": { "$ref": "common.schema.json#/$defs/Timestamp" },
+        "state": { "$ref": "#/$defs/DaemonState" },
+        "active_checkpoint_id": { "$ref": "common.schema.json#/$defs/CheckpointId" },
+        "run_id": { "$ref": "common.schema.json#/$defs/RunId", "description": "Present only while a training run is in progress." }
+      },
+      "required": ["ts", "state", "active_checkpoint_id"],
+      "additionalProperties": false
+    }
+  }
+}

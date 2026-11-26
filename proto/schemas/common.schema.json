@@ -1,1 +1,240 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.aether.invalid/v1/common.schema.json",
+  "title": "AETHER common definitions",
+  "description": "Shared primitives, JSON-RPC 2.0 envelopes, the error model and payloads reused across layers. CONVENTIONS: (1) The $id host is a non-resolvable identifier (.invalid, RFC 6761). Tools MUST resolve every $ref against this proto/schemas directory and MUST NOT fetch anything over the network. (2) Every request carries params._meta; trace_id is mandatory. Turn-scoped requests use TurnMeta. (3) x-aether-methods, present in each schema file that owns methods, is the routing contract: each route names a server that implements the method and the peers allowed to reach it there. A client sends a method only to a route whose peers include that client. For notifications, peers are the clients that receive the notification from the server. A gateway forwards a method only if some route lists 'gateway' as a peer. (4) Only keywords supported by typify, datamodel-code-generator and json-schema-to-typescript are used: no if/then/else, no not, no dependentRequired, no unevaluatedProperties. Cross-field rules are stated in descriptions and enforced by the receiving server. (5) Codegen for TypeScript MUST enable unreachableDefinitions so every $defs entry is emitted.",
+  "x-aether-schema-version": "1.0.0",
+  "x-aether-servers": {
+    "engine": { "socket": "engine.sock", "framing": "aframe" },
+    "toolbus": { "socket": "toolbus.sock", "framing": "ndjson" },
+    "crawler": { "socket": "crawler.sock", "framing": "ndjson" },
+    "learn": { "socket": "learn.sock", "framing": "ndjson" }
+  },
+  "x-aether-clients": ["gateway", "engine", "toolbus", "crawler", "learn"],
+  "x-aether-error-codes": [
+    { "code": -32700, "name": "ParseError", "retryable": false, "description": "Invalid JSON." },
+    { "code": -32600, "name": "InvalidRequest", "retryable": false, "description": "Not a valid JSON-RPC 2.0 request object." },
+    { "code": -32601, "name": "MethodNotFound", "retryable": false, "description": "Unknown method, or no route lists the caller as a peer." },
+    { "code": -32602, "name": "InvalidParams", "retryable": false, "description": "Params failed schema validation. data.pointer is an RFC 6901 pointer to the offending member." },
+    { "code": -32603, "name": "InternalError", "retryable": false, "description": "Unexpected server fault." },
+    { "code": -32001, "name": "Timeout", "retryable": true, "description": "Deadline or per-call timeout exceeded." },
+    { "code": -32002, "name": "SandboxViolation", "retryable": false, "description": "Sandboxed code attempted a forbidden operation." },
+    { "code": -32003, "name": "Unavailable", "retryable": true, "description": "Upstream socket down, model not loaded, or component starting." },
+    { "code": -32004, "name": "RateLimited", "retryable": true, "description": "Token bucket or concurrency limit hit. data.retry_after_ms may be set." },
+    { "code": -32005, "name": "PolicyDenied", "retryable": false, "description": "Toolbus policy refused the call (for example a private-network URL)." },
+    { "code": -32006, "name": "BudgetExhausted", "retryable": false, "description": "Per-turn tool-call budget used up. data.limit is the budget." },
+    { "code": -32007, "name": "Cancelled", "retryable": false, "description": "Cancelled by the caller, by disconnect or by backpressure." },
+    { "code": -32008, "name": "NotFound", "retryable": false, "description": "Referenced document, checkpoint, job or turn does not exist." }
+  ],
+  "$defs": {
+    "UnixMs": { "type": "integer", "minimum": 0, "maximum": 9007199254740991, "description": "Milliseconds since the Unix epoch, UTC. Bounded to 2^53-1 so JavaScript clients stay exact." },
+    "DurationMs": { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
+    "Timestamp": { "type": "string", "format": "date-time", "description": "RFC 3339 in UTC, for example 2026-11-18T03:04:05Z." },
+    "HttpUrl": { "type": "string", "format": "uri", "pattern": "^https?://[^\\s]+$", "maxLength": 2048, "description": "Absolute http(s) URL. Loopback, private, link-local and unique-local destinations are rejected by toolbus policy (-32005) unless allow-listed, which prevents model-driven SSRF." },
 
+    "SessionId": { "type": "string", "pattern": "^s_[0-9A-Za-z]{1,32}$", "description": "Identifiers are '<prefix>_<token>'. Generators SHOULD use a 26-character ULID token so ids sort by creation time." },
+    "ConversationId": { "type": "string", "pattern": "^cv_[0-9A-Za-z]{1,32}$" },
+    "TurnId": { "type": "string", "pattern": "^t_[0-9A-Za-z]{1,32}$" },
+    "TraceId": { "type": "string", "pattern": "^tr_[0-9A-Za-z]{1,32}$" },
+    "CallId": { "type": "string", "pattern": "^call_[0-9A-Za-z]{1,32}$" },
+    "JobId": { "type": "string", "pattern": "^j_[0-9A-Za-z]{1,32}$" },
+    "DocId": { "type": "string", "pattern": "^d_[0-9A-Za-z]{1,32}$" },
+    "ChunkId": { "type": "string", "pattern": "^ch_[0-9A-Za-z]{1,32}$" },
+    "SampleId": { "type": "string", "pattern": "^smp_[0-9A-Za-z]{1,32}$" },
+    "CheckpointId": { "type": "string", "pattern": "^ck_[0-9A-Za-z]{1,32}$", "description": "The base model is always ck_base." },
+    "RunId": { "type": "string", "pattern": "^run_[0-9A-Za-z]{1,32}$" },
+
+    "Meta": {
+      "type": "object",
+      "description": "Reserved params._meta for requests that are not part of a turn. trace_id keys the append-only audit log.",
+      "properties": {
+        "trace_id": { "$ref": "#/$defs/TraceId" },
+        "session_id": { "$ref": "#/$defs/SessionId" },
+        "turn_id": { "$ref": "#/$defs/TurnId" },
+        "deadline_unix_ms": { "$ref": "#/$defs/UnixMs" }
+      },
+      "required": ["trace_id"],
+      "additionalProperties": false
+    },
+    "TurnMeta": {
+      "type": "object",
+      "description": "params._meta for turn-scoped requests: engine.generate and every model-facing tool. Toolbus budgets, deadlines and audit all key off these four fields.",
+      "properties": {
+        "trace_id": { "$ref": "#/$defs/TraceId" },
+        "session_id": { "$ref": "#/$defs/SessionId" },
+        "turn_id": { "$ref": "#/$defs/TurnId" },
+        "deadline_unix_ms": { "$ref": "#/$defs/UnixMs" }
+      },
+      "required": ["trace_id", "session_id", "turn_id", "deadline_unix_ms"],
+      "additionalProperties": false
+    },
+
+    "JsonRpcId": {
+      "oneOf": [
+        { "type": "string", "minLength": 1, "maxLength": 128 },
+        { "type": "integer", "minimum": -9007199254740991, "maximum": 9007199254740991 }
+      ],
+      "description": "Request ids are never null. A null id appears only in an error response to a request whose id could not be determined."
+    },
+    "JsonRpcMethod": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$",
+      "maxLength": 64,
+      "description": "Dotted lower_snake method name. The 'rpc.' prefix is reserved by JSON-RPC 2.0 and the codec MUST reject it."
+    },
+    "JsonRpcParams": { "type": "object", "description": "Params are always a by-name object, possibly empty of members except _meta. Positional arrays are rejected." },
+    "JsonRpcRequest": {
+      "type": "object",
+      "properties": {
+        "jsonrpc": { "const": "2.0" },
+        "id": { "$ref": "#/$defs/JsonRpcId" },
+        "method": { "$ref": "#/$defs/JsonRpcMethod" },
+        "params": { "$ref": "#/$defs/JsonRpcParams" }
+      },
+      "required": ["jsonrpc", "id", "method", "params"],
+      "additionalProperties": false
+    },
+    "JsonRpcNotification": {
+      "type": "object",
+      "properties": {
+        "jsonrpc": { "const": "2.0" },
+        "method": { "$ref": "#/$defs/JsonRpcMethod" },
+        "params": { "$ref": "#/$defs/JsonRpcParams" }
+      },
+      "required": ["jsonrpc", "method", "params"],
+      "additionalProperties": false
+    },
+    "JsonRpcSuccess": {
+      "type": "object",
+      "properties": {
+        "jsonrpc": { "const": "2.0" },
+        "id": { "$ref": "#/$defs/JsonRpcId" },
+        "result": { "type": "object" }
+      },
+      "required": ["jsonrpc", "id", "result"],
+      "additionalProperties": false
+    },
+    "JsonRpcError": {
+      "type": "object",
+      "properties": {
+        "jsonrpc": { "const": "2.0" },
+        "id": { "anyOf": [{ "$ref": "#/$defs/JsonRpcId" }, { "type": "null" }] },
+        "error": { "$ref": "#/$defs/ErrorObject" }
+      },
+      "required": ["jsonrpc", "id", "error"],
+      "additionalProperties": false
+    },
+    "JsonRpcResponse": { "oneOf": [{ "$ref": "#/$defs/JsonRpcSuccess" }, { "$ref": "#/$defs/JsonRpcError" }] },
+    "JsonRpcMessage": {
+      "oneOf": [
+        { "$ref": "#/$defs/JsonRpcRequest" },
+        { "$ref": "#/$defs/JsonRpcNotification" },
+        { "$ref": "#/$defs/JsonRpcSuccess" },
+        { "$ref": "#/$defs/JsonRpcError" }
+      ]
+    },
+    "JsonRpcBatchRequest": {
+      "type": "array", "minItems": 1, "maxItems": 64,
+      "items": { "oneOf": [{ "$ref": "#/$defs/JsonRpcRequest" }, { "$ref": "#/$defs/JsonRpcNotification" }] },
+      "description": "NDJSON framing only. AFRAME never batches."
+    },
+    "JsonRpcBatchResponse": { "type": "array", "minItems": 1, "maxItems": 64, "items": { "$ref": "#/$defs/JsonRpcResponse" } },
+
+    "ErrorData": {
+      "type": "object",
+      "description": "Optional machine-readable detail. Open object: servers MAY add keys.",
+      "properties": {
+        "retryable": { "type": "boolean" },
+        "retry_after_ms": { "$ref": "#/$defs/DurationMs" },
+        "reason": { "type": "string", "maxLength": 256 },
+        "limit": { "type": "number" },
+        "violation": { "type": "string", "maxLength": 128 },
+        "pointer": { "type": "string", "maxLength": 512 }
+      },
+      "additionalProperties": true
+    },
+    "ErrorObject": {
+      "type": "object",
+      "description": "See x-aether-error-codes for the assigned codes.",
+      "properties": {
+        "code": { "type": "integer" },
+        "message": { "type": "string", "maxLength": 1024 },
+        "data": { "$ref": "#/$defs/ErrorData" }
+      },
+      "required": ["code", "message"],
+      "additionalProperties": false
+    },
+
+    "SubscribeResult": {
+      "type": "object",
+      "description": "Result of every *.subscribe method. Events then flow as notifications on the same connection.",
+      "properties": { "subscribed": { "const": true } },
+      "required": ["subscribed"],
+      "additionalProperties": false
+    },
+
+    "Role": { "enum": ["system", "user", "assistant", "tool"] },
+    "Message": {
+      "type": "object",
+      "properties": {
+        "role": { "$ref": "#/$defs/Role" },
+        "content": { "type": "string", "maxLength": 1048576 }
+      },
+      "required": ["role", "content"],
+      "additionalProperties": false
+    },
+    "Channel": { "enum": ["answer", "thought", "tool"], "description": "Wire values 0, 1, 2 in the AFRAME TOKENS frame." },
+    "Priority": { "enum": ["foreground", "background"], "description": "Foreground preempts background in the engine scheduler and always preempts the training lease." },
+    "FinishReason": { "enum": ["stop", "length", "cancelled", "tool_budget"] },
+    "Usage": {
+      "type": "object",
+      "properties": {
+        "prompt_tokens": { "type": "integer", "minimum": 0 },
+        "completion_tokens": { "type": "integer", "minimum": 0 },
+        "cached_tokens": { "type": "integer", "minimum": 0 },
+        "ttft_ms": { "type": "number", "minimum": 0 },
+        "tps": { "type": "number", "minimum": 0 }
+      },
+      "required": ["prompt_tokens", "completion_tokens", "cached_tokens", "ttft_ms", "tps"],
+      "additionalProperties": false
+    },
+
+    "ToolCallEvent": {
+      "type": "object",
+      "description": "The model began a tool call mid-generation.",
+      "properties": {
+        "call_id": { "$ref": "#/$defs/CallId" },
+        "name": { "$ref": "#/$defs/JsonRpcMethod" },
+        "arguments": { "type": "object" }
+      },
+      "required": ["call_id", "name", "arguments"],
+      "additionalProperties": false
+    },
+    "ToolResultEvent": {
+      "type": "object",
+      "description": "Exactly one of result or error is present: result when ok is true, error when ok is false.",
+      "properties": {
+        "call_id": { "$ref": "#/$defs/CallId" },
+        "ok": { "type": "boolean" },
+        "result": { "type": "object" },
+        "error": { "$ref": "#/$defs/ErrorObject" },
+        "duration_ms": { "type": "number", "minimum": 0 }
+      },
+      "required": ["call_id", "ok", "duration_ms"],
+      "additionalProperties": false
+    },
+    "Citation": {
+      "type": "object",
+      "description": "A verified citation. The engine emits one only if chunk_id was retrieved during the current turn. marker is the 1-based index of the distinct source in this turn and appears in the answer text as the literal [^marker].",
+      "properties": {
+        "marker": { "type": "integer", "minimum": 1 },
+        "doc_id": { "$ref": "#/$defs/DocId" },
+        "chunk_id": { "$ref": "#/$defs/ChunkId" },
+        "url": { "$ref": "#/$defs/HttpUrl" },
+        "title": { "type": "string", "maxLength": 512 }
+      },
+      "required": ["marker", "doc_id", "chunk_id", "url", "title"],
+      "additionalProperties": false
+    }
+  }
+}

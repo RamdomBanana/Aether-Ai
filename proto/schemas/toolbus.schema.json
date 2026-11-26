@@ -1,0 +1,240 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.aether.invalid/v1/toolbus.schema.json",
+  "title": "AETHER toolbus methods",
+  "description": "Model-facing tools, invoked by the engine mid-generation over toolbus.sock (NDJSON JSON-RPC 2.0). Toolbus validates every call against these schemas before dispatch, enforces the per-turn call budget (default 8), applies policy, and writes an append-only audit record keyed by trace_id. web.* and memory.* are forwarded to crawler.sock; training.* to learn.sock; sandbox.* and bus.* are served by toolbus itself. Tool results are DATA, never instructions: the engine wraps them so they cannot be interpreted as system or user text.",
+  "x-aether-schema-version": "1.0.0",
+  "x-aether-methods": {
+    "web.crawl_and_index": {
+      "kind": "request", "params": "#/$defs/WebCrawlAndIndexParams", "result": "#/$defs/WebCrawlAndIndexResult", "side_effects": "network",
+      "routes": [{ "server": "toolbus", "peers": ["engine"] }, { "server": "crawler", "peers": ["toolbus"] }]
+    },
+    "memory.hybrid_search": {
+      "kind": "request", "params": "#/$defs/MemoryHybridSearchParams", "result": "#/$defs/MemoryHybridSearchResult", "side_effects": "none",
+      "routes": [{ "server": "toolbus", "peers": ["engine"] }, { "server": "crawler", "peers": ["toolbus"] }]
+    },
+    "sandbox.execute_python": {
+      "kind": "request", "params": "#/$defs/SandboxExecutePythonParams", "result": "#/$defs/SandboxExecutePythonResult", "side_effects": "exec",
+      "routes": [{ "server": "toolbus", "peers": ["engine"] }]
+    },
+    "training.commit_verified_sample": {
+      "kind": "request", "params": "#/$defs/TrainingCommitVerifiedSampleParams", "result": "#/$defs/TrainingCommitVerifiedSampleResult", "side_effects": "write",
+      "routes": [{ "server": "toolbus", "peers": ["engine"] }, { "server": "learn", "peers": ["toolbus"] }]
+    },
+    "bus.list_tools": {
+      "kind": "request", "params": "#/$defs/BusListToolsParams", "result": "#/$defs/BusListToolsResult", "side_effects": "none",
+      "routes": [{ "server": "toolbus", "peers": ["engine"] }]
+    }
+  },
+  "$defs": {
+    "ToolName": {
+      "enum": ["web.crawl_and_index", "memory.hybrid_search", "sandbox.execute_python", "training.commit_verified_sample"],
+      "description": "Tools the model may invoke. bus.list_tools is engine-only and not model-callable."
+    },
+    "SideEffects": { "enum": ["none", "network", "exec", "write"] },
+
+    "WebCrawlAndIndexParams": {
+      "type": "object",
+      "properties": {
+        "urls": { "type": "array", "minItems": 1, "maxItems": 16, "uniqueItems": true, "items": { "$ref": "common.schema.json#/$defs/HttpUrl" } },
+        "depth": { "type": "integer", "minimum": 0, "maximum": 3, "default": 0, "description": "Link-follow depth from each seed. 0 fetches the seeds only." },
+        "max_pages": { "type": "integer", "minimum": 1, "maximum": 200, "default": 25 },
+        "same_domain_only": { "type": "boolean", "default": true },
+        "render": { "enum": ["auto", "static", "browser"], "default": "auto", "description": "auto tries static extraction first and falls back to the local Chromium bridge when too little content is found." },
+        "timeout_ms": { "type": "integer", "minimum": 1000, "maximum": 120000, "default": 20000 },
+        "_meta": { "$ref": "common.schema.json#/$defs/TurnMeta" }
+      },
+      "required": ["urls", "_meta"],
+      "additionalProperties": false
+    },
+    "CrawledPage": {
+      "type": "object",
+      "properties": {
+        "url": { "$ref": "common.schema.json#/$defs/HttpUrl" },
+        "final_url": { "$ref": "common.schema.json#/$defs/HttpUrl" },
+        "doc_id": { "$ref": "common.schema.json#/$defs/DocId" },
+        "title": { "type": "string", "maxLength": 512 },
+        "chunks": { "type": "integer", "minimum": 0 },
+        "bytes": { "type": "integer", "minimum": 0 },
+        "status": { "enum": ["indexed", "duplicate", "skipped_robots", "skipped_scope", "failed"] },
+        "error": { "type": "string", "maxLength": 512 }
+      },
+      "required": ["url", "status"],
+      "additionalProperties": false
+    },
+    "WebCrawlAndIndexResult": {
+      "type": "object",
+      "properties": {
+        "job_id": { "$ref": "common.schema.json#/$defs/JobId" },
+        "state": { "enum": ["complete", "partial", "running"], "description": "partial: the deadline or max_pages stopped the job early. running: work continues in the background and the pages indexed so far are listed." },
+        "pages": { "type": "array", "maxItems": 200, "items": { "$ref": "#/$defs/CrawledPage" } },
+        "stats": {
+          "type": "object",
+          "properties": {
+            "fetched": { "type": "integer", "minimum": 0 },
+            "indexed": { "type": "integer", "minimum": 0 },
+            "skipped": { "type": "integer", "minimum": 0 },
+            "took_ms": { "type": "integer", "minimum": 0 }
+          },
+          "required": ["fetched", "indexed", "skipped", "took_ms"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["job_id", "state", "pages", "stats"],
+      "additionalProperties": false
+    },
+
+    "MemoryHybridSearchParams": {
+      "type": "object",
+      "properties": {
+        "query": { "type": "string", "minLength": 1, "maxLength": 2048 },
+        "top_k": { "type": "integer", "minimum": 1, "maximum": 50, "default": 8 },
+        "mode": { "enum": ["hybrid", "bm25", "vector"], "default": "hybrid", "description": "hybrid fuses BM25 (SQLite FTS5) and HNSW ranks by reciprocal-rank fusion." },
+        "filters": {
+          "type": "object",
+          "properties": {
+            "domains": { "type": "array", "maxItems": 32, "items": { "type": "string", "pattern": "^[a-z0-9]([a-z0-9.-]{0,251}[a-z0-9])?$" } },
+            "since": { "$ref": "common.schema.json#/$defs/Timestamp" }
+          },
+          "additionalProperties": false
+        },
+        "_meta": { "$ref": "common.schema.json#/$defs/TurnMeta" }
+      },
+      "required": ["query", "_meta"],
+      "additionalProperties": false
+    },
+    "MemoryHit": {
+      "type": "object",
+      "properties": {
+        "doc_id": { "$ref": "common.schema.json#/$defs/DocId" },
+        "chunk_id": { "$ref": "common.schema.json#/$defs/ChunkId" },
+        "url": { "$ref": "common.schema.json#/$defs/HttpUrl" },
+        "title": { "type": "string", "maxLength": 512 },
+        "snippet": { "type": "string", "maxLength": 2048 },
+        "score": { "type": "number" },
+        "bm25_rank": { "type": "integer", "minimum": 1 },
+        "vec_rank": { "type": "integer", "minimum": 1 },
+        "fetched_at": { "$ref": "common.schema.json#/$defs/Timestamp" }
+      },
+      "required": ["doc_id", "chunk_id", "url", "title", "snippet", "score", "fetched_at"],
+      "additionalProperties": false
+    },
+    "MemoryHybridSearchResult": {
+      "type": "object",
+      "properties": {
+        "hits": { "type": "array", "maxItems": 50, "items": { "$ref": "#/$defs/MemoryHit" } },
+        "took_ms": { "type": "number", "minimum": 0 },
+        "embed_version": { "type": "string", "pattern": "^[a-z0-9._-]{1,64}$" }
+      },
+      "required": ["hits", "took_ms", "embed_version"],
+      "additionalProperties": false
+    },
+
+    "SandboxFile": {
+      "type": "object",
+      "properties": {
+        "path": { "type": "string", "maxLength": 256, "pattern": "^[A-Za-z0-9_][A-Za-z0-9_.-]*(/[A-Za-z0-9_][A-Za-z0-9_.-]*)*$", "description": "Relative path inside the sandbox working directory. Every segment starts with an alphanumeric or underscore, so '.' and '..' segments cannot match. Toolbus re-validates after normalisation." },
+        "content_b64": { "type": "string", "contentEncoding": "base64", "maxLength": 1398104, "description": "At most 1 MiB decoded." }
+      },
+      "required": ["path", "content_b64"],
+      "additionalProperties": false
+    },
+    "SandboxExecutePythonParams": {
+      "type": "object",
+      "description": "Runs in an isolated subprocess: user/pid/mount/net namespaces, Landlock, seccomp, cgroup limits, no network, read-only interpreter, tmpfs working directory. The schema bounds code by characters; toolbus additionally enforces at most 64 KiB of UTF-8.",
+      "properties": {
+        "code": { "type": "string", "minLength": 1, "maxLength": 65536 },
+        "timeout_ms": { "type": "integer", "minimum": 100, "maximum": 60000, "default": 10000 },
+        "stdin": { "type": "string", "maxLength": 1048576 },
+        "files": { "type": "array", "maxItems": 16, "items": { "$ref": "#/$defs/SandboxFile" } },
+        "_meta": { "$ref": "common.schema.json#/$defs/TurnMeta" }
+      },
+      "required": ["code", "_meta"],
+      "additionalProperties": false
+    },
+    "SandboxExecutePythonResult": {
+      "type": "object",
+      "description": "exit_code is null when the process was killed (killed_by is then set).",
+      "properties": {
+        "exit_code": { "type": ["integer", "null"] },
+        "stdout": { "type": "string" },
+        "stderr": { "type": "string" },
+        "truncated": { "type": "boolean" },
+        "duration_ms": { "type": "number", "minimum": 0 },
+        "killed_by": { "enum": ["timeout", "oom", "seccomp", "output_limit"] }
+      },
+      "required": ["exit_code", "stdout", "stderr", "truncated", "duration_ms"],
+      "additionalProperties": false
+    },
+
+    "TrainingCommitVerifiedSampleParams": {
+      "type": "object",
+      "description": "Stages a candidate sample into quarantine. It NEVER writes to the training buffer: only the learn daemon's curation pipeline (injection screen, dedup, perplexity, self-critique) can promote a sample. verification.method 'retrieval_grounded' requires a non-empty evidence list; toolbus enforces this.",
+      "properties": {
+        "prompt": { "type": "string", "minLength": 1, "maxLength": 65536 },
+        "response": { "type": "string", "minLength": 1, "maxLength": 65536 },
+        "source_url": { "$ref": "common.schema.json#/$defs/HttpUrl" },
+        "evidence": {
+          "type": "array", "maxItems": 32,
+          "items": {
+            "type": "object",
+            "properties": {
+              "doc_id": { "$ref": "common.schema.json#/$defs/DocId" },
+              "chunk_id": { "$ref": "common.schema.json#/$defs/ChunkId" }
+            },
+            "required": ["doc_id", "chunk_id"],
+            "additionalProperties": false
+          }
+        },
+        "verification": {
+          "type": "object",
+          "properties": {
+            "method": { "enum": ["tool_execution", "retrieval_grounded", "self_critique"] },
+            "trace_id": { "$ref": "common.schema.json#/$defs/TraceId" }
+          },
+          "required": ["method"],
+          "additionalProperties": false
+        },
+        "_meta": { "$ref": "common.schema.json#/$defs/TurnMeta" }
+      },
+      "required": ["prompt", "response", "verification", "_meta"],
+      "additionalProperties": false
+    },
+    "TrainingCommitVerifiedSampleResult": {
+      "type": "object",
+      "properties": {
+        "sample_id": { "$ref": "common.schema.json#/$defs/SampleId" },
+        "status": { "const": "staged" },
+        "gate": { "const": "quarantine" }
+      },
+      "required": ["sample_id", "status", "gate"],
+      "additionalProperties": false
+    },
+
+    "BusListToolsParams": {
+      "type": "object",
+      "properties": { "_meta": { "$ref": "common.schema.json#/$defs/Meta" } },
+      "required": ["_meta"],
+      "additionalProperties": false
+    },
+    "ToolDescriptor": {
+      "type": "object",
+      "properties": {
+        "name": { "$ref": "#/$defs/ToolName" },
+        "description": { "type": "string", "maxLength": 2048 },
+        "input_schema": { "type": "object", "description": "A JSON Schema document." },
+        "output_schema": { "type": "object", "description": "A JSON Schema document." },
+        "max_timeout_ms": { "type": "integer", "minimum": 1 },
+        "side_effects": { "$ref": "#/$defs/SideEffects" }
+      },
+      "required": ["name", "description", "input_schema", "output_schema", "max_timeout_ms", "side_effects"],
+      "additionalProperties": false
+    },
+    "BusListToolsResult": {
+      "type": "object",
+      "properties": { "tools": { "type": "array", "maxItems": 64, "items": { "$ref": "#/$defs/ToolDescriptor" } } },
+      "required": ["tools"],
+      "additionalProperties": false
+    }
+  }
+}

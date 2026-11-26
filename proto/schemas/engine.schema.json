@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.aether.invalid/v1/engine.schema.json",
+  "title": "AETHER engine methods",
+  "description": "JSON-RPC 2.0 methods carried in AFRAME RPC frames on engine.sock (see proto/aframe.md). engine.generate streams: TOKENS frames and stream.* notifications interleave on the request's stream_id, and the final RPC response closes it. Tool execution happens INSIDE the engine: when the stream parser sees a tool call it pauses decoding, calls toolbus over toolbus.sock, and resumes, so the client never has to answer mid-stream. The gateway only observes stream.tool_call and stream.tool_result.",
+  "x-aether-schema-version": "1.0.0",
+  "x-aether-methods": {
+    "engine.generate": { "kind": "request", "params": "#/$defs/EngineGenerateParams", "result": "#/$defs/EngineGenerateResult", "routes": [{ "server": "engine", "peers": ["gateway"] }] },
+    "engine.cancel": { "kind": "request", "params": "#/$defs/EngineCancelParams", "result": "#/$defs/EngineCancelResult", "routes": [{ "server": "engine", "peers": ["gateway"] }] },
+    "engine.embed": { "kind": "request", "params": "#/$defs/EngineEmbedParams", "result": "#/$defs/EngineEmbedResult", "routes": [{ "server": "engine", "peers": ["crawler", "learn"] }] },
+    "engine.load_checkpoint": { "kind": "request", "params": "#/$defs/EngineLoadCheckpointParams", "result": "#/$defs/EngineLoadCheckpointResult", "routes": [{ "server": "engine", "peers": ["learn"] }] },
+    "engine.status": { "kind": "request", "params": "#/$defs/EngineStatusParams", "result": "#/$defs/EngineStatusResult", "routes": [{ "server": "engine", "peers": ["gateway", "learn"] }] },
+    "stream.tool_call": { "kind": "notification", "params": "common.schema.json#/$defs/ToolCallEvent", "routes": [{ "server": "engine", "peers": ["gateway"] }] },
+    "stream.tool_result": { "kind": "notification", "params": "common.schema.json#/$defs/ToolResultEvent", "routes": [{ "server": "engine", "peers": ["gateway"] }] },
+    "stream.citation": { "kind": "notification", "params": "common.schema.json#/$defs/Citation", "routes": [{ "server": "engine", "peers": ["gateway"] }] },
+    "conn.goaway": { "kind": "notification", "params": "#/$defs/ConnGoawayParams", "routes": [{ "server": "engine", "peers": ["gateway", "crawler", "learn"] }] }
+  },
+  "$defs": {
+    "Sampling": {
+      "type": "object",
+      "properties": {
+        "temperature": { "type": "number", "minimum": 0, "maximum": 5 },
+        "top_p": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+        "top_k": { "type": "integer", "minimum": 1, "maximum": 4096 },
+        "min_p": { "type": "number", "minimum": 0, "maximum": 1 },
+        "repetition_penalty": { "type": "number", "minimum": 0.5, "maximum": 2 },
+        "seed": { "type": "integer", "minimum": 0, "maximum": 9007199254740991, "description": "With a fixed seed, fixed checkpoint and temperature 0 the stream is reproducible." }
+      },
+      "required": ["temperature", "top_p"],
+      "additionalProperties": false
+    },
+    "ToolSelection": {
+      "anyOf": [
+        { "enum": ["auto", "none"] },
+        { "type": "array", "minItems": 1, "maxItems": 8, "uniqueItems": true, "items": { "$ref": "toolbus.schema.json#/$defs/ToolName" } }
+      ],
+      "description": "auto: all tools the toolbus lists. none: tools disabled. array: an explicit allow-list."
+    },
+    "RagOptions": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "top_k": { "type": "integer", "minimum": 1, "maximum": 50 }
+      },
+      "required": ["enabled", "top_k"],
+      "additionalProperties": false
+    },
+
+    "EngineGenerateParams": {
+      "type": "object",
+      "description": "session_id and turn_id live in _meta (TurnMeta) and are not repeated here, so there is a single source of truth. Opens a stream. Citations are emitted only for chunk_ids retrieved during this turn.",
+      "properties": {
+        "messages": { "type": "array", "minItems": 1, "maxItems": 512, "items": { "$ref": "common.schema.json#/$defs/Message" } },
+        "sampling": { "$ref": "#/$defs/Sampling" },
+        "max_new_tokens": { "type": "integer", "minimum": 1, "maximum": 131072 },
+        "tools": { "$ref": "#/$defs/ToolSelection" },
+        "rag": { "$ref": "#/$defs/RagOptions" },
+        "priority": { "$ref": "common.schema.json#/$defs/Priority" },
+        "checkpoint_id": { "$ref": "common.schema.json#/$defs/CheckpointId", "description": "Pin a specific checkpoint for this turn. Omitted means the active checkpoint." },
+        "_meta": { "$ref": "common.schema.json#/$defs/TurnMeta" }
+      },
+      "required": ["messages", "sampling", "max_new_tokens", "tools", "rag", "priority", "_meta"],
+      "additionalProperties": false
+    },
+    "EngineGenerateResult": {
+      "type": "object",
+      "properties": {
+        "finish_reason": { "$ref": "common.schema.json#/$defs/FinishReason" },
+        "usage": { "$ref": "common.schema.json#/$defs/Usage" },
+        "checkpoint_id": { "$ref": "common.schema.json#/$defs/CheckpointId", "description": "The checkpoint that actually served the turn." }
+      },
+      "required": ["finish_reason", "usage", "checkpoint_id"],
+      "additionalProperties": false
+    },
+
+    "EngineCancelParams": {
+      "type": "object",
+      "properties": {
+        "turn_id": { "$ref": "common.schema.json#/$defs/TurnId" },
+        "_meta": { "$ref": "common.schema.json#/$defs/Meta" }
+      },
+      "required": ["turn_id", "_meta"],
+      "additionalProperties": false
+    },
+    "EngineCancelResult": {
+      "type": "object",
+      "description": "cancelled is false when the turn was unknown or had already finished. It is not an error.",
+      "properties": { "cancelled": { "type": "boolean" } },
+      "required": ["cancelled"],
+      "additionalProperties": false
+    },
+
+    "EngineEmbedParams": {
+      "type": "object",
+      "properties": {
+        "inputs": { "type": "array", "minItems": 1, "maxItems": 512, "items": { "type": "string", "minLength": 1, "maxLength": 32768 } },
+        "kind": { "enum": ["document", "query"], "description": "Selects the instruction prefix used by the embedding head." },
+        "_meta": { "$ref": "common.schema.json#/$defs/Meta" }
+      },
+      "required": ["inputs", "kind", "_meta"],
+      "additionalProperties": false
+    },
+    "EngineEmbedResult": {
+      "type": "object",
+      "description": "Final frame of the stream. It follows the VECTORS frames and commits them. count and dim MUST equal what the VECTORS frames carried. Vectors are L2-normalised f16, row-major, in the order of params.inputs.",
+      "properties": {
+        "dim": { "type": "integer", "minimum": 1, "maximum": 16384 },
+        "count": { "type": "integer", "minimum": 1, "maximum": 512 },
+        "embed_version": { "type": "string", "pattern": "^[a-z0-9._-]{1,64}$", "description": "Identifies the embedding head. A change triggers a background re-embed of the index and vector spaces are never mixed." },
+        "encoding": { "const": "f16le" },
+        "normalization": { "const": "l2" },
+        "vector_frames": { "type": "integer", "minimum": 1, "description": "Number of VECTORS frames that preceded this response." }
+      },
+      "required": ["dim", "count", "embed_version", "encoding", "normalization", "vector_frames"],
+      "additionalProperties": false
+    },
+
+    "EngineLoadCheckpointParams": {
+      "type": "object",
+      "description": "Hot-swaps the active adapter at a token boundary. In-flight turns finish on the checkpoint they started with.",
+      "properties": {
+        "checkpoint_id": { "$ref": "common.schema.json#/$defs/CheckpointId" },
+        "_meta": { "$ref": "common.schema.json#/$defs/Meta" }
+      },
+      "required": ["checkpoint_id", "_meta"],
+      "additionalProperties": false
+    },
+    "EngineLoadCheckpointResult": {
+      "type": "object",
+      "properties": {
+        "active": { "$ref": "common.schema.json#/$defs/CheckpointId" },
+        "previous": { "$ref": "common.schema.json#/$defs/CheckpointId" }
+      },
+      "required": ["active", "previous"],
+      "additionalProperties": false
+    },
+
+    "EngineStatusParams": {
+      "type": "object",
+      "properties": { "_meta": { "$ref": "common.schema.json#/$defs/Meta" } },
+      "required": ["_meta"],
+      "additionalProperties": false
+    },
+    "EngineStatusResult": {
+      "type": "object",
+      "properties": {
+        "checkpoint_id": { "$ref": "common.schema.json#/$defs/CheckpointId" },
+        "idle_ms": { "$ref": "common.schema.json#/$defs/DurationMs", "description": "Time since the last foreground request finished. The learn daemon takes its training lease only above a threshold." },
+        "queue_depth": { "type": "integer", "minimum": 0 },
+        "kv_utilization": { "type": "number", "minimum": 0, "maximum": 1 }
+      },
+      "required": ["checkpoint_id", "idle_ms", "queue_depth", "kv_utilization"],
+      "additionalProperties": false
+    },
+
+    "ConnGoawayParams": {
+      "type": "object",
+      "description": "Sent on stream 0 immediately before the sender closes the connection. Streams with id greater than last_stream_id were not processed and are safe to retry on a new connection.",
+      "properties": {
+        "code": { "enum": ["protocol_error", "version_unsupported", "shutdown", "overloaded"] },
+        "reason": { "type": "string", "maxLength": 256 },
+        "last_stream_id": { "type": "integer", "minimum": 0, "maximum": 4294967295 }
+      },
+      "required": ["code", "last_stream_id"],
+      "additionalProperties": false
+    }
+  }
+}

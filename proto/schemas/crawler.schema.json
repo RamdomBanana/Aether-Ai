@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.aether.invalid/v1/crawler.schema.json",
+  "title": "AETHER crawler and memory control plane (stub)",
+  "description": "Served on crawler.sock (NDJSON JSON-RPC 2.0), called by the gateway. FINAL in this stub: method names, routing, the crawler.event notification envelope, and every result type (they reference ui-sse.schema.json). OPEN in this stub: params objects marked x-aether-status=stub keep additionalProperties=true so Layer 3 can add members without renaming anything. The model-facing methods web.crawl_and_index and memory.hybrid_search are defined in toolbus.schema.json and also served here, for toolbus only. Subscription semantics: after crawler.subscribe succeeds, the server sends crawler.event notifications on that connection, beginning with a snapshot 'stats' event.",
+  "x-aether-schema-version": "1.0.0-stub.1",
+  "x-aether-methods": {
+    "crawler.job.submit": { "kind": "request", "params": "#/$defs/CrawlerJobSubmitParams", "result": "#/$defs/CrawlerJobSubmitResult", "routes": [{ "server": "crawler", "peers": ["gateway"] }] },
+    "crawler.job.status": { "kind": "request", "params": "#/$defs/CrawlerJobStatusParams", "result": "#/$defs/CrawlerJobStatusResult", "routes": [{ "server": "crawler", "peers": ["gateway"] }] },
+    "crawler.job.cancel": { "kind": "request", "params": "#/$defs/CrawlerJobCancelParams", "result": "#/$defs/CrawlerJobCancelResult", "routes": [{ "server": "crawler", "peers": ["gateway"] }] },
+    "crawler.subscribe": { "kind": "request", "params": "#/$defs/CrawlerSubscribeParams", "result": "common.schema.json#/$defs/SubscribeResult", "routes": [{ "server": "crawler", "peers": ["gateway"] }] },
+    "memory.stats": { "kind": "request", "params": "#/$defs/MemoryStatsParams", "result": "#/$defs/MemoryStatsResult", "routes": [{ "server": "crawler", "peers": ["gateway"] }] },
+    "memory.get_doc": { "kind": "request", "params": "#/$defs/MemoryGetDocParams", "result": "#/$defs/MemoryGetDocResult", "routes": [{ "server": "crawler", "peers": ["gateway"] }] },
+    "crawler.event": { "kind": "notification", "params": "ui-sse.schema.json#/$defs/CrawlerSseEvent", "routes": [{ "server": "crawler", "peers": ["gateway"] }] }
+  },
+  "$defs": {
+    "CrawlerJobSubmitParams": {
+      "type": "object",
+      "x-aether-status": "stub",
+      "properties": {
+        "urls": { "type": "array", "minItems": 1, "maxItems": 16, "uniqueItems": true, "items": { "$ref": "common.schema.json#/$defs/HttpUrl" } },
+        "depth": { "type": "integer", "minimum": 0, "maximum": 3 },
+        "max_pages": { "type": "integer", "minimum": 1, "maximum": 200 },
+        "same_domain_only": { "type": "boolean" },
+        "render": { "enum": ["auto", "static", "browser"] },
+        "_meta": { "$ref": "common.schema.json#/$defs/Meta" }
+      },
+      "required": ["urls", "_meta"],
+      "additionalProperties": true
+    },
+    "CrawlerJobSubmitResult": { "$ref": "ui-sse.schema.json#/$defs/CrawlerJobAccepted" },
+
+    "CrawlerJobStatusParams": {
+      "type": "object",
+      "x-aether-status": "stub",
+      "properties": {
+        "job_id": { "$ref": "common.schema.json#/$defs/JobId" },
+        "_meta": { "$ref": "common.schema.json#/$defs/Meta" }
+      },
+      "required": ["job_id", "_meta"],
+      "additionalProperties": true
+    },
+    "CrawlerJobStatusResult": { "$ref": "ui-sse.schema.json#/$defs/JobSnapshot" },
+
+    "CrawlerJobCancelParams": {
+      "type": "object",
+      "x-aether-status": "stub",
+      "properties": {
+        "job_id": { "$ref": "common.schema.json#/$defs/JobId" },
+        "_meta": { "$ref": "common.schema.json#/$defs/Meta" }
+      },
+      "required": ["job_id", "_meta"],
+      "additionalProperties": true
+    },
+    "CrawlerJobCancelResult": { "$ref": "ui-sse.schema.json#/$defs/JobCancelResponse" },
+
+    "CrawlerSubscribeParams": {
+      "type": "object",
+      "x-aether-status": "stub",
+      "properties": { "_meta": { "$ref": "common.schema.json#/$defs/Meta" } },
+      "required": ["_meta"],
+      "additionalProperties": true
+    },
+    "MemoryStatsParams": {
+      "type": "object",
+      "x-aether-status": "stub",
+      "properties": { "_meta": { "$ref": "common.schema.json#/$defs/Meta" } },
+      "required": ["_meta"],
+      "additionalProperties": true
+    },
+    "MemoryStatsResult": { "$ref": "ui-sse.schema.json#/$defs/CrawlerStats" },
+
+    "MemoryGetDocParams": {
+      "type": "object",
+      "x-aether-status": "stub",
+      "properties": {
+        "doc_id": { "$ref": "common.schema.json#/$defs/DocId" },
+        "_meta": { "$ref": "common.schema.json#/$defs/Meta" }
+      },
+      "required": ["doc_id", "_meta"],
+      "additionalProperties": true
+    },
+    "MemoryGetDocResult": { "$ref": "ui-sse.schema.json#/$defs/MemoryDocResponse" }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.aether.invalid/v1/learn.schema.json",
+  "title": "AETHER self-learning daemon control plane (stub)",
+  "description": "Served on learn.sock (NDJSON JSON-RPC 2.0), called by the gateway. FINAL in this stub: method names, routing, the learn.event notification envelope, and every result type (they reference ui-sse.schema.json and engine.schema.json). OPEN in this stub: params objects marked x-aether-status=stub keep additionalProperties=true so Layer 2 can add members without renaming anything. training.commit_verified_sample is defined in toolbus.schema.json and also served here, for toolbus only; it writes to quarantine and never to the training buffer. learn.checkpoint.rollback makes the given checkpoint active by calling engine.load_checkpoint, then emits ckpt.event with action rolled_back. Subscription semantics: after learn.subscribe succeeds, the server sends learn.event notifications on that connection, beginning with snapshot daemon.state and buffer.stats events.",
+  "x-aether-schema-version": "1.0.0-stub.1",
+  "x-aether-methods": {
+    "learn.status": { "kind": "request", "params": "#/$defs/LearnStatusParams", "result": "#/$defs/LearnStatusResult", "routes": [{ "server": "learn", "peers": ["gateway"] }] },
+    "learn.subscribe": { "kind": "request", "params": "#/$defs/LearnSubscribeParams", "result": "common.schema.json#/$defs/SubscribeResult", "routes": [{ "server": "learn", "peers": ["gateway"] }] },
+    "learn.pause": { "kind": "request", "params": "#/$defs/LearnPauseParams", "result": "#/$defs/LearnStatusResult", "routes": [{ "server": "learn", "peers": ["gateway"] }] },
+    "learn.resume": { "kind": "request", "params": "#/$defs/LearnResumeParams", "result": "#/$defs/LearnStatusResult", "routes": [{ "server": "learn", "peers": ["gateway"] }] },
+    "learn.checkpoint.list": { "kind": "request", "params": "#/$defs/LearnCheckpointListParams", "result": "#/$defs/LearnCheckpointListResult", "routes": [{ "server": "learn", "peers": ["gateway"] }] },
+    "learn.checkpoint.rollback": { "kind": "request", "params": "#/$defs/LearnCheckpointRollbackParams", "result": "#/$defs/LearnCheckpointRollbackResult", "routes": [{ "server": "learn", "peers": ["gateway"] }] },
+    "learn.event": { "kind": "notification", "params": "ui-sse.schema.json#/$defs/LearnSseEvent", "routes": [{ "server": "learn", "peers": ["gateway"] }] }
+  },
+  "$defs": {
+    "LearnStatusParams": {
+      "type": "object",
+      "x-aether-status": "stub",
+      "properties": { "_meta": { "$ref": "common.schema.json#/$defs/Meta" } },
+      "required": ["_meta"],
+      "additionalProperties": true
+    },
+    "LearnStatusResult": { "$ref": "ui-sse.schema.json#/$defs/LearnStatus" },
+
+    "LearnSubscribeParams": {
+      "type": "object",
+      "x-aether-status": "stub",
+      "properties": { "_meta": { "$ref": "common.schema.json#/$defs/Meta" } },
+      "required": ["_meta"],
+      "additionalProperties": true
+    },
+    "LearnPauseParams": {
+      "type": "object",
+      "x-aether-status": "stub",
+      "properties": {
+        "reason": { "type": "string", "maxLength": 128 },
+        "_meta": { "$ref": "common.schema.json#/$defs/Meta" }
+      },
+      "required": ["_meta"],
+      "additionalProperties": true
+    },
+    "LearnResumeParams": {
+      "type": "object",
+      "x-aether-status": "stub",
+      "properties": { "_meta": { "$ref": "common.schema.json#/$defs/Meta" } },
+      "required": ["_meta"],
+      "additionalProperties": true
+    },
+
+    "LearnCheckpointListParams": {
+      "type": "object",
+      "x-aether-status": "stub",
+      "properties": { "_meta": { "$ref": "common.schema.json#/$defs/Meta" } },
+      "required": ["_meta"],
+      "additionalProperties": true
+    },
+    "LearnCheckpointListResult": { "$ref": "ui-sse.schema.json#/$defs/CheckpointList" },
+
+    "LearnCheckpointRollbackParams": {
+      "type": "object",
+      "x-aether-status": "stub",
+      "properties": {
+        "checkpoint_id": { "$ref": "common.schema.json#/$defs/CheckpointId" },
+        "_meta": { "$ref": "common.schema.json#/$defs/Meta" }
+      },
+      "required": ["checkpoint_id", "_meta"],
+      "additionalProperties": true
+    },
+    "LearnCheckpointRollbackResult": { "$ref": "ui-sse.schema.json#/$defs/RollbackResponse" }
+  }
+}
